@@ -1,0 +1,51 @@
+{% extends 'lms/main.html' %}
+{% load humanize %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 d-flex flex-column justify-content-center">
+
+                <!-- <div class="d-flex justify-content-center py-4">
+                    <a href="index.html" class="logo d-flex align-items-center w-auto">
+                    <img src="assets/img/logo.png" alt="">
+                    <span class="d-none d-lg-block">NiceAdmin</span>
+                    </a>
+                </div> -->
+                <!-- End Logo -->
+                <h1 class="text-center">PAYMENT RECEIPT</h1>
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>Payment type</th>
+                        <td>Application fee</td>
+                    </tr>
+                    <tr>
+                        <th>Amount paid</th>
+                        <td>NGN {{payment.amount|intcomma}}</td>
+                    </tr>
+                    <tr>
+                        <th>Reference number</th>
+                        <td>{{payment.ref}}</td>
+                    </tr>
+                    <tr>
+                        <th>Applicant email</th>
+                        <td>{{payment.email}}</td>
+                    </tr>
+                    <tr>
+                        <th>Date paid</th>
+                        <td>{{payment.date_created}}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment status</th>
+                        <td class="text-success">Success</td>
+                    </tr>
+                </table>
+                <div>
+                    <button type="button" class="btn btn-outline-primary d-print-none my-1 btn-block" onclick="window.print()">Print receipt</button>
+                    <a href="{% url 'register_student' student %}" type="button" class="btn btn-success d-print-none my-1 btn-block">Continue registration</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

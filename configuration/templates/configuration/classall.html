@@ -1,0 +1,76 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Class</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'viewclass' %}">manage class</a></li>
+        <li class="breadcrumb-item active">create class</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="row">
+    <h3 class="text-center">Create class</h3>
+    <div class="col-12">
+        <a href="#Class" class="btn btn-block btn-secondary" data-toggle="modal">Add new class</a>
+    </div>
+    <div class="col-12">
+        <table class="table">
+            <tr>
+                <th>S/N</th>
+                <th>Class</th>
+            </tr>
+            {% for class in class %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{class.group}} class</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div>
+        <!-- <button type="button" class="btn btn-secondary">Add new class</button> -->
+        <div id="Class" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add new class</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-12 my-1">
+                                    <!-- <input class="form-control mb-2" type="text" name="group" id=""> -->
+                                    <select name="group" class="form-control" id="" required>
+                                        <option value="">--Select a class--</option>
+                                        <option value="JS1">JS1</option>
+                                        <option value="JS2">JS2</option>
+                                        <option value="JS3">JS3</option>
+                                        <option value="SS1">SS1</option>
+                                        <option value="SS2">SS2</option>
+                                        <option value="SS3">SS3</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 my-1">
+                                    <label for="">Password</label>
+                                    <input type="password" name="psw" class="form-control" placeholder="Administrative password" required>
+                                </div>
+                                <div class="col-sm-12 my-1">
+                                    <button type="submit" class="btn btn-block btn-secondary" name="submit">Grant access and create</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}

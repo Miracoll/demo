@@ -1,0 +1,28 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>View arm</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'arm' %}">arm</a></li>
+        <li class="breadcrumb-item active">view arm</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div>
+    <h3 class="text-center">Manage Arm</h3>
+    <div>
+        <table class="table">
+            {% for arm in arm %}
+            <tr>
+                <td>{{arm.arm}} arm</td>
+                <td>
+                    <button class="btn btn-outline-primary">action</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock content %}

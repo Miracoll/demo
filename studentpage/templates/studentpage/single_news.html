@@ -1,0 +1,23 @@
+{% extends 'studentpage/main.html' %}
+{% load static %}
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Message center</h6>
+    </div>
+    <div class="card-body">
+        <span class="dropdown-item d-flex align-items-center">
+            <div class="dropdown-list-image mr-3">
+                <img class="rounded-circle" src="{% static 'frontpage/images/log.png' %}"
+                    alt="...">
+                <div class="status-indicator bg-success"></div>
+            </div>
+            <div class="font-weight-bold">
+                <div class="text-truncate">{{news.title}}</div>
+                <div>{{news.content}}</div>
+                <div class="small text-gray-500">{{news.author.profile.role.role}} · {{news.created|date:"d M"}}</div>
+            </div>
+        </span>
+    </div>
+</div>
+{% endblock content %}

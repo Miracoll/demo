@@ -1,0 +1,34 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>View term</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'term' %}">term</a></li>
+        <li class="breadcrumb-item active">view term</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div>
+    <h3 class="text-center">Manage Term</h3>
+    <div>
+        <table class="table">
+            {% for term in term %}
+            <tr>
+                <td>{{term.term}} term</td>
+                {% if term.active == 0 %}
+                <td>
+                    <button class="btn btn-outline-danger">Not active</button>
+                </td>
+                {% else %}
+                <td>
+                    <button class="btn btn-outline-success">Active</button>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock content %}

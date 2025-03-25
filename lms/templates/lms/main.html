@@ -1,0 +1,713 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>{{config.school_initial}} - Dashboard</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'frontpage/images/new_logo.png' %}" rel="icon">
+  <!-- <link href="{% static 'school/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon"> -->
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link rel="stylesheet" href="{% static 'css/toastr.css' %}">
+  <link href="{% static 'school/assets/css/bootstrap.min.css.css' %}" rel="stylesheet">
+  <link href="{% static 'school/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'school/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'school/assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'school/assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static 'school/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'school/assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'school/assets/vendor/simple-datatables/style.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'school/assets/css/style.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'toastr/toastr.min.css' %}">
+  {% block sty %}{% endblock sty %}
+  <style>
+    mir-hidden{
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="loader" class="center"></div>
+  
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center d-print-none">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="{% url 'home' %}" class="logo d-flex align-items-center">
+        <img src="{% static 'frontpage/images/new_logo.png' %}" alt="">
+        <span class="d-none d-lg-block">{{config.school_initial}} STAFF</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown pe-3">
+
+          <span class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown" style="cursor: pointer;">
+            <img src="{{user.profile.passport.url}}" alt="Profile" class="rounded-circle" style="width: 499;height:498;">
+            {% if user.profile.role.keyword == 'class-teacher' %}
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{user.first_name}}{{user.last_name}}</span>
+            {% else %}
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{user.last_name}}</span>
+            {% endif %}
+          </span><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              {% if user.profile.role.keyword == 'class-teacher' %}
+              <h6>{{user.first_name}}{{user.last_name}}</h6>
+              <span>{{user.profile.role}}</span>
+              {% else %}
+              <h6>{{user.last_name}} {{user.first_name}}</h6>
+              <span>{{user.profile.role}}</span>
+              {% endif %}
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'userprofile' %}">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'staff_change_password' %}">
+                <i class="bi bi-lock"></i>
+                <span>Change Password</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'needhelp' %}">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'home' %}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+      {% if user.profile.role.keyword == 'subject-teacher' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'class-teacher' or user.profile.role.keyword == 'controller' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-book"></i><span>Academics</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          {% if user.profile.role.keyword == 'subject-teacher' or user.profile.role.keyword == 'admin' %}
+          <li>
+            <a href="{% url 'eassessment' %}">
+              <i class="bi bi-circle"></i><span>Setup online assessment</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'controller' %}
+          <li>
+            <a href="{% url 'admin_assessment' %}">
+              <i class="bi bi-circle"></i><span>Manage assessment</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.profile.role.keyword == 'subject-teacher' %}
+          <li>
+            <a href="{% url 'assessment' %}">
+              <i class="bi bi-circle"></i><span>Manage assessment</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.profile.role.keyword == 'class-teacher' %}
+          <li>
+            <a href="{% url 'class_academics' %}">
+              <i class="bi bi-circle"></i><span>Manage academics</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </li>
+      {% endif %}
+      <!-- End Components Nav -->
+      {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'controller' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-tools"></i><span>Configuration</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          {% if user.profile.role.keyword == 'admin' %}
+          <li>
+            <a href="{% url 'config' %}">
+              <i class="bi bi-circle"></i><span>Manage school</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'role' %}">
+              <i class="bi bi-circle"></i><span>Add role</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'category' %}">
+              <i class="bi bi-circle"></i><span>Add category</span>
+            </a>
+          </li>
+          {% endif %}
+          <li>
+            <a href="{% url 'session' %}">
+              <i class="bi bi-circle"></i><span>Manage session</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'term' %}">
+              <i class="bi bi-circle"></i><span>Manage term</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'subject' %}">
+              <i class="bi bi-circle"></i><span>Manage subject</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'arm' %}">
+              <i class="bi bi-circle"></i><span>Manage arm</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'viewclass' %}">
+              <i class="bi bi-circle"></i><span>Manage class</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'backup' %}">
+              <i class="bi bi-circle"></i><span>Backup all data</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      <!-- End Forms Nav -->
+      {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'controller' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#card-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-card-text"></i><span>Card</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="card-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'generatecard' %}">
+              <i class="bi bi-circle"></i><span>Generate card</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      <!-- End Forms Nav -->
+      {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'bursar' or user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#pay" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-paypal"></i><span>Payment</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="pay" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'payment_setup' %}">
+              <i class="bi bi-circle"></i><span>Setup fee</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'manage_payment' %}">
+              <i class="bi bi-circle"></i><span>Manage fees</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'paidstudent' %}">
+              <i class="bi bi-circle"></i><span>Get students</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'clear_application' %}">
+              <i class="bi bi-circle"></i><span>Clear application fee(manual)</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'cleartuition' %}">
+              <i class="bi bi-circle"></i><span>Clear tuition fee(manual)</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      {% if config.use_hostel %}
+      {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'bursar' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#hostel" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-house"></i><span>Manage Hostel</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="hostel" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'createhostel' %}">
+              <i class="bi bi-circle"></i><span>Create Hostel</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'paymentsetup' %}">
+              <i class="bi bi-circle"></i><span>Payment Setup</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'hostelfloor' %}">
+              <i class="bi bi-circle"></i><span>Hostel floor</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'hostelroom' %}">
+              <i class="bi bi-circle"></i><span>Hostel room</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'hostelbedspace' %}">
+              <i class="bi bi-circle"></i><span>Hostel bedspace</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'assignhostel' %}">
+              <i class="bi bi-circle"></i><span>Assign hostel</span>
+            </a>
+          </li>
+          {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'admin' %}
+          <li>
+            <a href="{% url 'hostelroom' %}">
+              <i class="bi bi-circle"></i><span>Manage hostel</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </li><!-- End Icons Nav -->
+      {% endif %}
+      {% endif %}
+      {% if user.profile.role.keyword == 'class-teacher' or user.profile.role.keyword == 'admin' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#att-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-card-checklist"></i><span>Attendance</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="att-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          {% if user.profile.role.keyword == 'class-teacher' %}
+          <li>
+            <a href="{% url 'attendance' %}">
+              <i class="bi bi-circle"></i><span>Today attendance</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'vice-principal' %}
+          <li>
+            <a href="{% url 'before_attendance' %}">
+              <i class="bi bi-circle"></i><span>Today attendance</span>
+            </a>
+          </li>
+          {% endif %}
+          <li>
+            <a href="{% url 'unlock' %}">
+              <i class="bi bi-circle"></i><span>Unlock attendance</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      <!-- End Attendance Nav -->
+      {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'controller' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#news-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-newspaper"></i><span>News</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="news-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'news' %}">
+              <i class="bi bi-circle"></i><span>Public news</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'privatenews' %}">
+              <i class="bi bi-circle"></i><span>Private news</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#result-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-bar-chart-line"></i><span>Result</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="result-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'controller' %}
+          <li>
+            <a href="{% url 'result_compute' %}">
+              <i class="bi bi-circle"></i><span>Start result computation</span>
+            </a>
+          </li>
+          {%endif%}
+          {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'subject-teacher' or user.profile.role.keyword == 'class-teacher' or  user.profile.role.keyword == 'controller' %}
+          <li>
+            <a href="{% url 'result_template' %}">
+              <i class="bi bi-circle"></i><span>Download result</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'subject-teacher' or user.profile.role.keyword == 'class-teacher' %}
+          {% endif %}
+          <!-- <li>
+            <a href="{% url 'get_result' %}">
+              <i class="bi bi-circle"></i><span>Check student result</span>
+            </a>
+          </li> -->
+          {% if user.profile.role.keyword == 'admin' or  user.profile.role.keyword == 'class-teacher' or user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'guidance-and-counsellor' or user.profile.role.keyword == 'hostel-manager' %}
+          <li>
+            <a href="{% url 'result_comment' %}">
+              <i class="bi bi-circle"></i><span>Add result comment</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'subject-teacher' or user.profile.role.keyword == 'controller' %}
+          <li>
+            <a href="{% url 'result_approve' %}">
+              <i class="bi bi-circle"></i><span>Approve result</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'allocate' %}">
+              <i class="bi bi-circle"></i><span>Allocate subject</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'controller' %}
+          <li>
+            <a href="{% url 'get_upload' %}">
+              <i class="bi bi-circle"></i><span>Manage upload</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'controller' or user.profile.role.keyword == 'class-teacher' %}
+          <li>
+            <a href="{% url 'broadsheet' %}">
+              <i class="bi bi-circle"></i><span>Print broadsheet</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.profile.role.keyword == 'class-teacher'%}
+          <li>
+            <a href="{% url 'result_status' %}">
+              <i class="bi bi-circle"></i><span>Result status</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'personality' %}">
+              <i class="bi bi-circle"></i><span>Upload personality report</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </li>
+      {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'class-teacher' or user.profile.role.keyword == 'controller' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#student-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-person"></i><span>Student</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="student-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'class-teacher' or user.profile.role.keyword == 'controller' %}
+          <li>
+            <a href="{% url 'get_student' %}">
+              <i class="bi bi-circle"></i><span>Manage student</span>
+            </a>
+          </li>
+          {%endif%}
+          {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'controller' %}
+          <li>
+            <a href="{% url 'transfer_student' %}">
+              <i class="bi bi-circle"></i><span>Transfer student</span>
+            </a>
+          </li>
+          {%endif%}
+          {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'class-teacher' or user.profile.role.keyword == 'controller' %}
+          <li>
+            <a href="{% url 'enable_student' %}">
+              <i class="bi bi-circle"></i><span>Enable student</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'disable_student' %}">
+              <i class="bi bi-circle"></i><span>Disable student</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'studentpasswordreset' %}">
+              <i class="bi bi-circle"></i><span>Reset student password</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'get-student-register-course' %}">
+              <i class="bi bi-circle"></i><span>Register course</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'unlock-course' %}">
+              <i class="bi bi-circle"></i><span>Unlock course</span>
+            </a>
+          </li>
+          {%endif%}
+          {% if user.profile.role.keyword == 'admin' %}
+          <li>
+            <a href="{% url 'edit_reg' %}">
+              <i class="bi bi-circle"></i><span>Edit student reg</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </li>
+      {% endif %}
+      {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'class-teacher' or user.profile.role.keyword == 'controller' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#applicant-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-person"></i><span>Application</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="applicant-nav" class="nav-content collapse " data-bs-parent="#applicant-nav">
+          <li>
+            <a href="{% url 'pre_register_student' %}">
+              <i class="bi bi-circle"></i><span>New registration</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'continue_reg' %}">
+              <i class="bi bi-circle"></i><span>Continue registration</span>
+            </a>
+          </li>
+          {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'controller' %}
+          <li>
+            <a href="{% url 'startstopreg' %}">
+              <i class="bi bi-circle"></i><span>Start/stop reg</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </li>
+      {% endif %}
+      {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'controller' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#staff-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-people"></i><span>Staff</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="staff-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'register_teacher' %}">
+              <i class="bi bi-circle"></i><span>Add new staff</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'get_staff' %}">
+              <i class="bi bi-circle"></i><span>Manage staff</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'enable_staff' %}">
+              <i class="bi bi-circle"></i><span>Enable staff</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'disable_staff' %}">
+              <i class="bi bi-circle"></i><span>Disable staff</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'staffpasswordreset' %}">
+              <i class="bi bi-circle"></i><span>Reset staff password</span>
+            </a>
+          </li>
+          {% if user.profile.role.keyword == 'admin' %}
+          <li>
+            <a href="{% url 'edit_staff_reg' %}">
+              <i class="bi bi-circle"></i><span>Edit staff reg</span>
+            </a>
+          </li>
+          {%endif%}
+        </ul>
+      </li>
+      {% endif %}
+      {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'controller' %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#parent-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-people"></i><span>Parent</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="parent-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'parent-get-student' %}">
+              <i class="bi bi-circle"></i><span>Create parent account</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'parent-get-parent-student' %}">
+              <i class="bi bi-circle"></i><span>Assign student to parent</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'parent-get' %}">
+              <i class="bi bi-circle"></i><span>Manage parent</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#miscellaneous-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-star"></i><span>Miscellaneous</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="miscellaneous-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'print-datasheet' %}">
+              <i class="bi bi-circle"></i><span>Print datasheet</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'select-datasheet' %}">
+              <i class="bi bi-circle"></i><span>Get reg number(<small class="text-danger">by class</small>)</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'print-subject-list' %}">
+              <i class="bi bi-circle"></i><span>Print subject list</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'fix-2024-result' %}">
+              <i class="bi bi-circle"></i><span>Fix result</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!-- <li class="nav-heading">Pages</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="users-profile.html">
+          <i class="bi bi-person"></i>
+          <span>Student</span>
+        </a>
+      </li> -->
+      <!-- End Profile Page Nav -->
+
+      <!-- <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'logout' %}">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Logout</span>
+        </a>
+      </li> -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+   
+    {% block content %}{% endblock content %}
+  </main><!-- End #main -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center d-print-none"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  {% block sky %}{% endblock sky %}
+  <script src="{% static 'school/assets/js/jquery-3.6.0.min.js' %}"></script>
+  <script src="{% static 'toastr/toastr.min.js' %}"></script>
+    <script>
+        $(function(){
+            toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "10000",
+            "extendedTimeOut": "6000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        {% if messages %}
+        {% for message in messages %}
+            toastr.{{ message.tags }}("{{ message }}")
+        {% endfor %}
+        {% endif %}
+
+        });
+    </script>
+  <script src="{% static 'school/assets/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'school/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'school/assets/vendor/quill/quill.min.js' %}"></script>
+  <script src="{% static 'school/assets/vendor/simple-datatables/simple-datatables.js' %}"></script>
+  <script src="{% static 'school/assets/vendor/tinymce/tinymce.min.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'school/assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

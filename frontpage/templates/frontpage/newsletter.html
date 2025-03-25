@@ -1,0 +1,126 @@
+{% extends 'frontpage/main.html' %}
+{% load static %}
+{% block content %}
+
+<section id="contact">
+    <div class="container-fluid">
+        <div class="row contact-row">
+            <div class="col-12">
+                <p>NEWSLETTER</p>
+            </div>
+        </div>
+        <div class="underline-contact"></div>
+    </div>
+</section>
+
+
+  <!--Picture-->
+  <!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <img src="{% static 'frontpage/images/galleryc.jpeg' %}" alt="" width="100%" style="height: 600px;" class="img-fluid">
+        </div>
+       
+      </div>
+  </div> -->
+  <div class="m-3">
+    <!-- <h3></h3> -->
+    <p><strong>Dear Parent/Guardian,</strong></p>
+    <p>May the peace of God Almighty be with you. We thank God for his goodness and mercy that brought us to the end of the term. The demonstration family wishes you a merry Christmas and a prosperous new year.</p>
+    <p>We sincerely thank you parents and Guardians for paying your children/wards fees promptly. Those that did not pay on time should do better this term.</p>
+    <p>We are constrained to increase the bus fare because of the increase in the price of petrol and cost of maintenance. We also sincerely apologize for the occasional breakdown of our buses. </p>
+    <h3 class="text-center text-uppercase">During this term, we achieved the following:</h3>
+    <ul>
+        <li>Our SS3 students will sit for their NECO/WAEC Examination.</li>
+        <li>We now have our school POS for cash payment in the school.</li>
+        <li>Use of phones by students is highly prohibited</li>
+        <li>We now have a Wednesday wear, which cost ₦4,500 for material and sewing. Those students that do not have the Wednesday wear should get it this term.</li>
+        <li>We want to announce that our college has gone online and our students can access their results. Click <a href="{% url 'resultchecker' %}">here</a> to check the result</li>
+        <li>You parents can also access the result using the scratch card given to your children.</li>
+    </ul>
+    <h3 class="text-center text-uppercase">Below Are The Details of Second Term Fees For 2023/2024 Session.</h3>
+    <div class="table-responsive-sm">
+        <table class="table">
+            <tr>
+                <th>SCHOOL FEE</th>
+                <td>NGN 15,000</td>
+            </tr>
+            <tr>
+                <th>TOTAL</th>
+                <td>NGN 15,000</td>
+            </tr>
+        </table>
+        <p class="text-danger"><strong>To be paid into Fidelity Bank plc Account Number: 4110012622</strong></p>
+    </div>
+    <h3 class="text-center">OTHER FEES</h3>
+    <div class="table-responsive-sm">
+        <table class="table">
+            <tr>
+                <td>1</td>
+                <td>Portal</td>
+                <td>NGN 300</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Sanitation fee</td>
+                <td>NGN 500</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Sports levy</td>
+                <td>NGN 500</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Lesson fee</td>
+                <td>NGN 2000</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Medical fee</td>
+                <td>NGN 500</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>PTA levy</td>
+                <td>NGN 2,000</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>ICT</td>
+                <td>NGN 2,000</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>Wednesday wear</td>
+                <td>NGN 4,500</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>Examination fee</td>
+                <td>NGN 500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><strong>Total</strong></td>
+                <td><strong>NGN 12,800</strong></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Bus fare</td>
+                <td>NGN 18,000 per term</td>
+            </tr>
+        </table>
+        <p><strong class="text-danger"><i>NOTE:</i></strong> If you have paid for the Wednesday wear, you should not pay the NGN 4,500  but this amount NGN 8,300</p>
+    </div>
+    <p>All these fees should be paid into UBA plc. 1021738185</p>
+    <p>They are to be paid on or before 30th January, 2024. Next term reopens on 10th January, 2024. </p>
+    <p>May God Almighty bless us all as we work towards making your children good and worthy citizens of this country.</p>
+    <div class="text-center">
+        Ukah Gabinus <br>
+        (Principal) <br>
+        08039599911
+    </div>
+  </div>
+  
+{% endblock content %}

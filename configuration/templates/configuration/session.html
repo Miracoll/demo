@@ -1,0 +1,135 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">session</li>
+      </ol>
+    </nav>
+</div>
+
+<div>
+    <h3 class="text-center">Manage Session</h3>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#session">Create new session</button>
+    <div>
+        <table class="table">
+            <tr>
+                <th>S/N</th>
+                <th>Session</th>
+                <th>Year</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for session in session %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{session.session}}</td>
+                <td>{{session.year}}</td>
+                {% if session.active == 1 %}
+                <td class="text-success">Active</td>
+                <td class="text-success">Currently active</td>
+                {% else %}
+                <td class="text-danger">Not active</td>
+                <td>
+                    <a href="{% url 'switchsession' session.ref %}">Activate now</a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<div id="session" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Session</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-12 my-2">
+                            <select name="session" class="form-select" required aria-label="Default select example">
+                                <option value="">--Select session--</option>
+                                <option value="2018/2019">2018/2019</option>
+                                <option value="2019/2020">2019/2020</option>
+                                <option value="2020/2021">2020/2021</option>
+                                <option value="2021/2022">2021/2022</option>
+                                <option value="2022/2023">2022/2023</option>
+                                <option value="2023/2024">2023/2024</option>
+                                <option value="2024/2025">2024/2025</option>
+                                <option value="2025/2026">2025/2026</option>
+                            </select>
+                        </div>
+                        <div class="col-12 my-2">
+                            <select name="year" class="form-select" required aria-label="Default select example">
+                                <option value="">--Select year--</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                            </select>
+                        </div>
+                        <div class="col-12 my-2">
+                            <label for="">Password</label>
+                            <input type="password" name="psw" id="" class="form-control" required placeholder="Administrative password">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#info">
+                            Create
+                        </button>
+
+                        <!-- The Modal -->
+                        <div class="modal" id="info">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                            
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title"><strong>WARNING</strong></h5>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                            
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <h5>Proceeding with this action will trigger the following:</h5>
+                                        <ol>
+                                            <li>End and deactivate result computation</li>
+                                            <li>Start registration</li>
+                                            <li>Resume switching term and session</li>
+                                            <li>Promote PASSED students from last annual result computation</li>
+                                            <li>Graduate SS3 students and remove there registered subjects</li>
+                                            <li class="text-danger">Pls do not interrupt while the process is going on</li>
+                                        </ol>
+                                    </div>
+                            
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <button name="submit" type="submit" class="btn btn-block btn-primary">Proceed</button>
+                                        </form>
+                                    </div>
+                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+{% endblock content %}

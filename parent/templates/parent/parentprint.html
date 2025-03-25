@@ -1,0 +1,68 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+            <!-- End Logo -->
+            <h1 class="text-uppercase text-center">{{config.school_name}}</h1>
+            <p class="text-center">{{config.school_address}}</p>
+            <div class="row">
+                
+            </div>
+            <div class="row d-flex justify-content-center">
+                <h4 class="text-dark text-left">PARENT INFOMATION</h4><hr>
+                <div class="col-12">
+                    <table class="table">
+                        <tr>
+                            <td>Last Name:</td>
+                            <td>{{parent.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>First Name:</td>
+                            <td>{{parent.first_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Address:</td>
+                            <td>{{parent.address}}</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile:</td>
+                            <td>{{parent.mobile}}</td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td>{{parent.email}}</td>
+                        </tr>
+                        <tr>
+                            <td>Registration number:</td>
+                            <td>{{parent.unique_number}}</td>
+                        </tr>
+                        <tr>
+                            <td>Student:</td>
+                            <td>
+                                <ul>
+                                    {% for i in assigned %}
+                                    {{i.student.username}}
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="d-flex justify-content-between d-print-none">
+                        <button class="btn btn-primary" onclick="window.print()">Print Acknowledgement Slip</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

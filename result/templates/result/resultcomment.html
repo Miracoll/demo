@@ -1,0 +1,84 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 d-flex flex-column align-items-center justify-content-center">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+
+            
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Setup comment for Student</h5>
+            </div>
+            <div class="alert alert-info">Class teacher must approve result before commence commenting</div>
+            <form action="" class="row g-3 needs-validation" novalidate method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col-lg-12 col-md-12">
+                    <label for="comment70" class="form-label">For average score  greater than or equals 70</label>
+                    <input name="comment70" id="" class="form-control" required placeholder="comment...">
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <label for="comment55" class="form-label">For average score betweeen 55 and 69</label>
+                    <input name="comment55" id="" class="form-control" required placeholder="comment...">
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <label for="comment40" class="form-label">For average score between 40 and 54</label>
+                    <input name="comment40" id="" class="form-control" required placeholder="comment...">
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <label for="comment39" class="form-label">For average score  lesser than 40</label>
+                    <input name="comment39" id="" class="form-control" required placeholder="comment...">
+                </div>
+                <div class="col-md-12 col-lg-12">
+                    <button name="submit" class="btn btn-primary btn-lg w-100" type="submit">Submit</button>
+                </div>
+            </form>
+            <div class="col-md-12 col-lg-12 mt-3">
+                <a href="#special" class="btn btn-lg btn-secondary btn-block w-100" data-toggle="modal">Special comment</a>
+                <!-- <button type="button" class="btn btn-secondary">Add new class</button> -->
+                <div id="special" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Special comment</h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 mb-3">
+                                            <input placeholder="Student registration number" class="form-control mb-2" type="text" name="reg" id="">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 mb-3">
+                                            <input name="comment" id="" class="form-control" cols="30" rows="3" placeholder="Comment...">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12">
+                                            <button type="submit" class="btn btn-secondary" name="submit1">Comment</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

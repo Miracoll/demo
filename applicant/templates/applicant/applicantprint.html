@@ -1,0 +1,90 @@
+{% extends 'lms/main.html' %}
+{% load humanize %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 d-flex flex-column justify-content-center">
+
+                <!-- <div class="d-flex justify-content-center py-4">
+                    <a href="index.html" class="logo d-flex align-items-center w-auto">
+                    <img src="assets/img/logo.png" alt="">
+                    <span class="d-none d-lg-block">NiceAdmin</span>
+                    </a>
+                </div> -->
+                <!-- End Logo -->
+                <h1 class="text-center">PAYMENT INVOICE</h1>
+                <div class="alert alert-info">
+                    Use the <strong>'Applicant number'</strong> to continue registration if need be
+                </div>
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>Payment type</th>
+                        <td>Application fee</td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{payment.applicant.last_name}} {{payment.applicant.first_name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Amount</th>
+                        <td>NGN {{payment.amount|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reference number</th>
+                        <td>{{payment.payment_ref}}</td>
+                    </tr>
+                    <tr>
+                        <th>Applicant number</th>
+                        <td>{{applicant.applicant_number}}</td>
+                    </tr>
+                    <tr>
+                        <th>Applicant email</th>
+                        <td>{{payment.email}}</td>
+                    </tr>
+                    <tr>
+                        <th>Mobile number</th>
+                        <td>{{payment.applicant.mobile}}</td>
+                    </tr>
+                    <tr>
+                        <th>Date generated</th>
+                        <td>{{payment.date_created}}</td>
+                    </tr>
+                </table>
+                <div>
+                    <button type="button" class="btn btn-outline-primary d-print-none w-100 my-1" onclick="window.print()">Print invoice</button>
+                    <!-- <button type="button" class="btn btn-danger d-print-none w-100 my-1" onclick="payWithPaystack()">Pay now</button> -->
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger d-print-none w-100 my-1">Proceed</button>
+                    </form>
+                    <!-- <button type="button" class="btn btn-success d-print-none w-100 my-1">Verify</button> -->
+                </div>
+                <script>
+                    function payWithPaystack() {
+                    var handler = PaystackPop.setup({
+                        key: '{{public}}', // Replace with your public key
+                        email: '{{payment.email}}',
+                        amount: '{{payment.amount}}' * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
+                        currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+                        ref: '{{payment.payment_ref}}', // Replace with a reference you generated
+                        callback: function(response) {
+                        //this happens after the payment is completed successfully
+                        window.location = "{% url 'applicantpaid' payment.ref %}";
+                        // Make an AJAX call to your server with the reference to verify the transaction
+                        },
+                        onClose: function() {
+                        window.location = "{% url 'print_rrr' applicant.id %}";
+                        },
+                    });
+                    handler.openIframe();
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+{% block sky %}
+<script src="https://js.paystack.co/v1/inline.js"></script>
+{% endblock sky %}

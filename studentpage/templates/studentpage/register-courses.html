@@ -1,0 +1,79 @@
+{% extends 'studentpage/main.html' %}
+{% block content %}
+{% if not student.register_course %}
+<div class="row justify-content-between">
+    <div class="card col-md-5 col-sm-12 justify-content-center">
+        <div class="card-header text-center">
+            REGISTER YOUR COURSES
+        </div>
+        <div class="card-body">
+            <p class="font-weight-bold text-center text-danger"><i>Maximum subjects of 10</i></p>
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for course in courses %}
+                <div class="d-flex justify-content-between">
+                    <!-- <input type="checkbox" name="sub1" id="sub1"> -->
+                    <label for="sub1">{{course.subject}}</label>
+                    <a href="{% url 'student_add_course' course.ref student.ref %}" class="btn btn-danger">ADD</a>
+                </div>
+                <hr>
+                {% endfor %}
+            </form>
+            
+        </div>
+    </div>
+    
+    <div class="card col-md-5 col-sm-12">
+        <div class="card-header text-center">
+            REGISTERED COURSES
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                {% if registered %}
+                <p class="font-weight-bold text-center text-danger"><i>Maximum subjects of 10</i></p>
+                {% for r in registered %}
+                <div class="d-flex justify-content-between">
+                    <!-- <input type="checkbox" name="sub1" id="sub1"> -->
+                    <label for="sub1">{{r.subject}}</label>
+                    {% if not r.lock %}
+                    <a href="{% url 'student_remove_course' r.ref %}" class="btn btn-danger">REMOVE</a>
+                    {% endif %}
+                </div>
+                <hr>
+                {% endfor %}
+                {% else %}
+                <p class="font-weight-bold text-center text-danger"><i>No registered subject yet</i></p>
+                {% endif %}
+
+                <button type="submit" class="btn btn-dark btn-block">SUBMIT REGISTRATION</button>
+            </form>
+            
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col-sm-12 col-12 justify-content-center">
+        <h5 class="fw-bold text-center">
+            REGISTERED COURSES
+        </h5>
+        <div>
+            <table class="table">
+                <tr>
+                    <th>S/N</th>
+                    <th>SUBJECTS</th>
+                </tr>
+                {% for course in registered %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{course.subject}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

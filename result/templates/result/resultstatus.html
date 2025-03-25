@@ -1,0 +1,62 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Manage Result</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Approve result</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<section class="section register">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
+                {% if unitsubject %}
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>S/N</th>
+                            <th>Subject</th>
+                            <th>Class</th>
+                            <th>Uploaded</th>
+                            <th>Action</th>
+                        </tr>
+                        {% for unitsubject in unitsubject %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{ unitsubject.subject }}</td>
+                            <td>{{unitsubject.group}}{{unitsubject.arm}}</td>
+                            <td>{{unitsubject.upload}} uploaded out of {{unitsubject.total_student}}</td>
+                            {% if unitsubject.approve_result == 0 %}
+                            <td>
+                                <span class="text-danger">Not approved</span>
+                            </td>
+                            {% else %}
+                            <td>
+                                <span class="text-success">Approved</span>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% if group.approve_result == 0 %}
+                    <a href="{% url 'approve_class_result' %}" class="btn btn-primary btn-block my-1">Approve class result</a>
+                    <button class="btn btn-success disabled btn-block my-1">Publish now</button>
+                    {% else %}
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-primary disabled btn-block my-1">Approve class result</button>
+                        <button class="btn btn-success btn-block" type="submit">Publish now</button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% else %}
+                <h3 class="text-danger text-center">No result detail to display</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

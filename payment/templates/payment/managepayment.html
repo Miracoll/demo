@@ -1,0 +1,36 @@
+{% extends 'lms/main.html' %}
+{% load humanize %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12 col-md-12 d-flex flex-column align-items-center justify-content-center">
+
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Manage payment</h5>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>S/N</th>
+                    <th>Payment type</th>
+                    <th>Amount</th>
+                    <th>Class</th>
+                    <th>Action</th>
+                </tr>
+                {% for payment in payment %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ payment.payment }}</td>
+                    <td>NGN {{payment.amount|intcomma}}</td>
+                    <td>{{payment.group}}</td>
+                    <td>
+                        <a href="{% url 'modify_payment' payment.ref %}">Manage payment</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

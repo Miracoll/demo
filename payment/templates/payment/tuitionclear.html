@@ -1,0 +1,40 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 d-flex flex-column">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Manually clear student tuition payment</h5>
+            </div>
+            <form action="" class="row g-3 needs-validation" novalidate method="POST">
+                {% csrf_token %}
+                <div class="col-12">
+                    <label for="">Student registration number</label>
+                    <input type="text" placeholder="Enter student registration number" name="reg" class="form-control" required>
+                </div>
+                <div class="col-12">
+                    <label for="">Amount paid</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="inputGroupPrepend">NGN</span>
+                        <input type="number" name="amount" placeholder="Enter amount paid" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button name="clear" class="btn btn-primary w-100" type="submit">Clear fee</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

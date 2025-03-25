@@ -1,0 +1,75 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 d-flex flex-column align-items-center justify-content-center">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Setup payment</h5>
+                <p class="text-center small">Enter payment details</p>
+            </div>
+            <form action="" class="row g-3 needs-validation" novalidate method="POST">
+                {% csrf_token %}
+                <div class="col-12">
+                    <input type="text" placeholder="Enter payment type" name="payment" class="form-control" required>
+                </div>
+                <!-- <div class="col-12">
+                    <select name="payment" class="form-select" aria-label="Default select example" required>
+                        <option value="">--Select payment type--</option>
+                        <option value="application">Application</option>
+                        <option value="tuition">Tuition</option>
+                        <option value="hostel">Hostel</option>
+                        <option value="sport">Sport</option>
+                        <option value="card">Card</option>
+                        <option value="medical">Medical</option>
+                        {% for hostel in hostel %}
+                        <option value="{{ hostel.hostel_name }}">{{ hostel.hostel_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div> -->
+                <div class="col-12">
+                    <select name="cat" class="form-select" aria-label="Default select example" required>
+                        <option value="application">Application</option>
+                        <option value="tuition">Tuition</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <input type="number" placeholder="Enter amount" name="amount" class="form-control" required>
+                </div>
+                <div class="col-12">
+                    <select name="group" class="form-select" aria-label="Default select example" required>
+                        <option value="all">all</option>
+                        <option value="junior">JS1 to JS3(Junior)</option>
+                        <option value="senior">SS1 to SS3(Senior)</option>
+                        {% for g in group %}
+                        <option value="{{ g.group }}">{{ g.group }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- <div class="col-12">
+                    <select name="arm" class="form-select" aria-label="Default select example" required>
+                        <option value="all">all</option>
+                        {% for g in arm %}
+                        <option value="{{ g.arm }}">{{ g.arm }}</option>
+                        {% endfor %}
+                    </select>
+                </div> -->
+                <div class="col-12">
+                    <button name="pay" class="btn btn-primary w-100" type="submit">Setup payment</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends 'frontpage/main.html' %}
+{% load static %}
+{% block content %}
+
+<section id="contact">
+    <div class="container-fluid">
+        <div class="row contact-row">
+            <div class="col-12">
+                <p>About Us</p>
+            </div>
+        </div>
+        <div class="underline-contact"></div>
+    </div>
+</section>
+
+
+  <!--Picture-->
+  <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <img src="{% static 'frontpage/images/inst-graduate1.webp' %}" alt="" width="100%" style="height: 600px;" class="img-fluid">
+        </div>
+       
+      </div>
+  </div>
+  
+{% endblock content %}

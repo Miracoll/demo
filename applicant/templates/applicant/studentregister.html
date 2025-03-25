@@ -1,0 +1,153 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 d-flex flex-column align-items-center justify-content-center">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Creating an Account for Student</h5>
+                <p class="text-center small">Enter your personal details</p>
+            </div>
+            <form action="" class="row g-3 needs-validation" novalidate method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col-lg-4 col-md-12">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" name="last_name" value="{{student.last_name}}" class="form-control" id="lastName" readonly required>
+                    <div class="invalid-feedback">Please, enter your last name!</div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" name="first_name" value="{{student.first_name}}" class="form-control" id="firstName" readonly required>
+                    <div class="invalid-feedback">Please, enter your first name!</div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+                    <label for="otherName" class="form-label">Other Name</label>
+                    <input type="text" name="other_name" value="{{student.other_name}}" class="form-control" id="otherName" readonly>
+                </div>
+
+                <div class="col-lg-6 col-md-12">
+                    <label for="yourEmail" class="form-label">Email</label>
+                    <input type="email" name="email" value="{{student.email}}" class="form-control" id="yourEmail" readonly>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="yourEmail" class="form-label">Phone Number</label>
+                    <input type="tels" name="mobile" value="{{student.mobile}}" class="form-control" id="yourEmail" readonly>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="inputDate" class="col-sm-6 col-form-label">Date of birth</label>
+                      <input type="date" name="dob" class="form-control" required>
+                      <div class="invalid-feedback">Please, enter your date of birth!</div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label class="col-sm-6 col-form-label">Gender</label>
+                    <select name="sex" class="form-select" aria-label="Default select example" required>
+                        <option value="">--Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <textarea class="form-control" style="height: 70px; resize: none;" name="address" placeholder="Address...." required></textarea>
+                    <div class="invalid-feedback">Please, enter your address!</div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Passport</label>
+                    <input class="form-control" type="file" id="formFile" accept=".jpg,.png,.jpeg" name="myfile" required>
+                    <div class="invalid-feedback">Please, upload student passport!</div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Class</label>
+                    <!-- <input class="form-control" type="text" id="" name="group" required> -->
+                    <select name="group" class="form-control" value="{{student.group}}" required id="" aria-label="Default select example">
+                        <option value="{{ student.group }}">{{ student.group }}</option>
+                    </select>
+                    <div class="invalid-feedback">Please, select a class</div>
+                </div>
+                <div class="col-lg-2 col-md-12">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Arm</label>
+                    <!-- <input class="form-control" type="file" id="formFile" name="myfile" required> -->
+                    <select name="arm" class="form-control" value="{{student.arm}}" required id="" aria-label="Default select example">
+                        <option value="{{ student.arm }}">{{ student.arm }}</option>
+                    </select>
+                    <div class="invalid-feedback">Please, select a class</div>
+                </div>
+                <div>
+                    <h5 class="card-title text-center pb-0 fs-4">Enter parent/guardian details</h5>
+                </div>
+                
+
+                <div class="col-12">
+                    <input type="radio" name="title" id="mrmrs" value="Mr&Mrs" checked>
+                    <label for="mrmrs" class="form-check-label">Mr&Mrs</label>
+
+                    <input type="radio" name="title" id="mr" value="Mr">
+                    <label for="mr" class="form-check-label">Mr</label>
+
+                    <input type="radio" name="title" id="mrs" value="Mrs">
+                    <label for="mrs" class="form-check-label">Mrs</label>
+                </div>
+                <div class="col-sm-12 col-lg-6">
+                    <input type="text" name="glast" class="form-control" id="yourName" placeholder="parent/guardian last name" required>
+                    <div class="invalid-feedback">Please, enter parent/guardian last name!</div>
+                </div>
+                <div class="col-sm-12 col-lg-6">
+                    <input type="text" name="gfirst" class="form-control" id="yourName" placeholder="parent/guardian first name" required>
+                    <div class="invalid-feedback">Please, enter parent/guardian first name!</div>
+                </div>
+
+                <div class="col-lg-6 col-md-12">
+                    <input type="email" name="gemail" class="form-control" id="yourEmail" placeholder="parent/guardian email">
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <input type="tel" name="gmobile" class="form-control" id="yourEmail" placeholder="parent/guardian mobile number" required>
+                    <div class="invalid-feedback">Please, enter parent/guardian mobile!</div>
+                </div>
+                <div class="col-12">
+                    <input type="checkbox" name="check_addr" id="addr" class="form-check-input">
+                    <label for="addr" class="form-check-label">Use above address</label>
+                </div>
+                <div class="col-12">
+                    <textarea class="form-control" id="maddr" style="height: 70px; resize: none;" name="gaddress" placeholder="parent/guardian address...."></textarea>
+                </div>
+                <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
+                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button name="register-student" class="btn btn-primary w-100" type="submit">Submit</button>
+                </div>
+                <script>
+                    // Get references to the checkbox and textarea elements
+                    const checkbox = document.getElementById('addr');
+                    const textarea = document.getElementById('maddr');
+            
+                    // Add an event listener to the checkbox to monitor changes
+                    checkbox.addEventListener('change', function () {
+                        if (checkbox.checked) {
+                            // If the checkbox is checked, disable the textarea
+                            textarea.disabled = true;
+                        } else {
+                            // If the checkbox is not checked, enable the textarea
+                            textarea.disabled = false;
+                        }
+                    });
+                </script>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

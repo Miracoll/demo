@@ -1,0 +1,110 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Manage Assessment</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">upload assessment</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-12 border-right border-primary">
+                <!-- <div class="d-flex justify-content-center py-4">
+                    <a href="index.html" class="logo d-flex align-items-center w-auto">
+                    <img src="assets/img/logo.png" alt="">
+                    <span class="d-none d-lg-block">NiceAdmin</span>
+                    </a>
+                </div> -->
+                <!-- End Logo -->
+                <div>
+                    <h5 class="card-title text-center pb-0 fs-4">Get Assessment Template file</h5>
+                </div>
+                <form action="" class="row g-3 needs-validation" novalidate method="POST">
+                    {% csrf_token %}
+                    <div class="col-lg-12 col-md-12">
+                        <select name="subject" class="form-select" aria-label="Default select example" required>
+                            <option value="">--Subject--</option>
+                            {% for subject in subject %}
+                            <option value="{{subject.subject}}, {{subject.group}}, {{subject.arm}}">{{subject.subject}} ({{subject.group}}{{subject.arm}})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button name="submit" class="btn btn-primary w-100" type="submit">Get template</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6 col-md-12 ">
+                <div>
+                    <h5 class="card-title text-center pb-0 fs-4">Manually Upload Assessment(<small class="text-danger" >Not recommended</small>)</h5>
+                </div>
+                <form action="{% url 'assessment' %}" class="row g-3 needs-validation" novalidate method="POST">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        <select name="mass" class="form-select" aria-label="Default select example" disabled required>
+                            <option value="">--Subject--</option>
+                            {% for subject in subject %}
+                            <option value="{{subject.subject}}, {{subject.group}}, {{subject.arm}}">{{subject.subject}} ({{subject.group}}{{subject.arm}})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <select name="ass" class="form-select" aria-label="Default select example" disabled required>
+                            <option value="">--Assessment--</option>
+                            <option value="CA1">CA1</option>
+                            <option value="CA2">CA2</option>
+                            <option value="CA3">CA3</option>
+                            <option value="project">Project</option>
+                            <option value="test">Test</option>
+                            <option value="exam">Exam</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <input type="number" name="score" class="form-control" placeholder="Student score" id="score" disabled required>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" name="reg_num" class="form-control" id="regNum" placeholder="Student registration number" disabled required>
+                    </div>
+                    <div class="col-12">
+                        <button name="manualupload" class="btn btn-primary w-100 btn-block" disabled type="submit">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div><hr>
+        <div class="row mt-3 justify-content-center">
+            <div class="col-md-12 col-lg-8">
+                <div>
+                    <h5 class="card-title text-center pb-0 fs-4">Upload Assessment file</h5>
+                </div>
+                
+                <div class="alert alert-danger"><strong>Ensure to save the .CSV file before uploading</strong></div>
+                <form action="" class="row g-3 needs-validation" novalidate method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        <input class="form-control" type="file" id="formFile" name="file" accept=".csv">
+                    </div>
+                    <div class="col-12">
+                        <select name="usub" class="form-select" aria-label="Default select example" required>
+                            <option value="">--Subject--</option>
+                            {% for subject in usub %}
+                            <option value="{{subject.subject}}, {{subject.group}}, {{subject.arm}}">{{subject.subject}} ({{subject.group}}{{subject.arm}})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <input type="number" name="summer" class="form-control" placeholder="Total sum of all students and their CA">
+                        <p class="text-danger"><strong>This field ensures that your file is saved before upload. <br>Upload won't be successful if total score does not match with the scores in the file</strong></p>
+                    </div>
+                    <div class="col-12">
+                        <button name="csvupload" class="btn btn-primary w-100" type="submit">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

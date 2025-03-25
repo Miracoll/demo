@@ -1,0 +1,149 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 d-flex flex-column align-items-center justify-content-center">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Create an Account for Staff</h5>
+                <p class="text-center small">Enter your personal details to create account</p>
+            </div>
+            <form action="" class="row g-3 needs-validation" novalidate method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col-lg-4 col-md-12">
+                    <label for="lastName" class="form-label">Last Name<span class="text-danger">*</span></label>
+                    <input type="text" name="last_name" class="form-control" id="lastName" placeholder="Staff legal last name" required>
+                    <div class="invalid-feedback">Please, enter your last name!</div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+                    <label for="firstName" class="form-label">First Name<span class="text-danger">*</span></label>
+                    <input type="text" name="first_name" class="form-control" id="firstName" placeholder="Staff legal first name" required>
+                    <div class="invalid-feedback">Please, enter your first name!</div>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+                    <label for="otherName" class="form-label">Other Name</label>
+                    <input type="text" name="other_name" class="form-control" id="otherName" placeholder="Staff legal middle name">
+                </div>
+
+                <div class="col-lg-6 col-md-12">
+                    <label for="yourEmail" class="form-label">Email<span class="text-danger">*</span></label>
+                    <input type="email" name="email" class="form-control" id="yourEmail" placeholder="Active email only" required>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="yourEmail" class="form-label">Phone Number<span class="text-danger">*</span></label>
+                    <input type="tels" name="mobile" class="form-control" id="yourEmail" placeholder="Active mobile only" required>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="inputDate" class="col-sm-6 col-form-label">Date of birth<span class="text-danger">*</span></label>
+                      <input type="date" name="dob" class="form-control" required>
+                      <div class="invalid-feedback">Please, enter your date of birth!</div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label class="col-sm-6 col-form-label">Gender<span class="text-danger">*</span></label>
+                    <select name="sex" class="form-select" aria-label="Default select example" required>
+                        <option value="">--Select a gender--</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label for="address" class="col-sm-2 col-form-label">Address<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="address" placeholder="Staff residential address" required>
+                    <div class="invalid-feedback">Please, enter your address!</div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Passport<span class="text-danger">*</span></label>
+                    <input class="form-control" type="file" id="formFile" accept=".jpg,.png,.jpeg" name="myfile" required>
+                    <div class="invalid-feedback">Please, upload student passport!</div>
+                    <!-- {{form}} -->
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="role" class="col-sm-2 col-form-label">Role<span class="text-danger">*</span></label>
+                    <select name="role" id="" class="form-control" required>
+                        <option value="">--Select A Role--</option>
+                        {% for staff in staff %}
+                        <option value="{{staff.role}}">{{staff.role}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <h5 class="card-title text-center pb-0 fs-4">Enter next of kin details</h5>
+                </div>
+
+                <div class="col-12">
+                    <input type="radio" name="title" id="mr" value="Mr" checked>
+                    <label for="mr" class="form-check-label">Mr</label>
+
+                    <input type="radio" name="title" id="mrs" value="Mrs">
+                    <label for="mrs" class="form-check-label">Mrs</label>
+
+                    <input type="radio" name="title" id="master" value="Master">
+                    <label for="master" class="form-check-label">Master</label>
+                    
+                    <input type="radio" name="title" id="miss" value="Miss">
+                    <label for="miss" class="form-check-label">Miss</label>
+
+                    <input type="radio" name="title" id="others" value="Others">
+                    <label for="others" class="form-check-label">Others</label>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label class="">Relationship<span class="text-danger">*</span></label>
+                    <select name="relate" class="form-select" aria-label="Default select example" required>
+                        <option value="">--Select a relationship--</option>
+                        <option value="Father">Father</option>
+                        <option value="Mother">Mother</option>
+                        <option value="Husband">Husband</option>
+                        <option value="Wife">Wife</option>
+                        <option value="Brother">Brother</option>
+                        <option value="Sister">Sister</option>
+                        <option value="Cousin">Cousin</option>
+                        <option value="Nephew">Nephew</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="yourName" class="">Full Name<span class="text-danger">*</span></label>
+                    <input type="text" name="full_name" class="form-control" id="yourName" placeholder="Relation full name" required>
+                    <div class="invalid-feedback">Please, enter guardian/parent full name!</div>
+                </div>
+
+                <div class="col-lg-6 col-md-12">
+                    <label for="yourEmail" class="form-label">Email</label>
+                    <input type="email" name="email1" class="form-control" placeholder="Relation active email" id="yourEmail">
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="yourEmail" class="form-label">Phone Number<span class="text-danger">*</span></label>
+                    <input type="tel" name="mobile1" class="form-control" id="yourEmail" placeholder="Relation active mobile" required>
+                    <div class="invalid-feedback">Please, enter guardian/parent full name!</div>
+                </div>
+                <div class="col-12">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Address<span class="text-danger">*</span></label>
+                    <input class="form-control" name="address1" placeholder="Relation residential address" required>
+                    <div class="invalid-feedback">Please, enter guardian/parent address!</div>
+                </div>
+                {% comment %} <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
+                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
+                    </div>
+                </div> {% endcomment %}
+                <div class="col-12">
+                    <button name="submit" class="btn btn-primary w-100" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

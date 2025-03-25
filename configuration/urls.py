@@ -1,0 +1,31 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.config, name='config'),
+    path('error', views.configerror, name='configerror'),
+    path('term/', views.term, name='term'),
+    # path('view-term/', views.viewterm, name='viewterm'),
+    path('switch-term/<str:ref>/', views.switchterm, name='switchterm'),
+    # path('create-term/', views.createterm, name='createterm'),
+    path('term/error/', views.termerror, name='termerror'),
+    path('session/', views.session, name='session'),
+    # path('view-session/', views.viewsession, name='viewsession'),
+    path('switch-session/<str:ref>/', views.switchsession, name='switchsession'),
+    # path('create-session/', views.createsession, name='createsession'),
+    path('manage/unit/class/', views.viewclass, name='viewclass'),
+    path('manage/all/class/', views.viewallclass, name='viewall'),
+    path('class/', views.group, name='class'),
+    path('class/remove/<str:pk>/', views.removeclassteacher, name='remove_class_teacher'),
+    path('class/deactivate/<str:pk>/', views.deactivateclass, name='deactivate_class'),
+    path('class/activate/<str:pk>/', views.activateclass, name='activate_class'),
+    path('subject/', views.subject, name='subject'),
+    path('subject/remove/<str:pk>', views.removeassign, name='remove_assign'),
+    path('arm/', views.arm, name='arm'),
+    # path('view-arm/', views.viewarm, name='viewarm'),
+    # path('create-arm/', views.createarm, name='createarm'),
+    path('role/', views.newrole, name='role'),
+    path('category/', views.category, name='category'),
+    path('secret/', views.manualUpdate, name='secret'),
+    path('backup/now/', views.backupData, name='backup'),
+]

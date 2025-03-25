@@ -1,0 +1,39 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Switch session</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'session' %}">session</a></li>
+        <li class="breadcrumb-item active">switch session</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div>
+    <h3 class="text-center">Manage Session</h3>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-6">
+                <p>Current active: <span class="text-danger">{{active}}</span></p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <select name="session" class="form-select" required aria-label="Default select example">
+                                <option value="">--Select session--</option>
+                                {% for session in session %}
+                                <option>{{session.session}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 mt-3">
+                            <button type="submit" name="submit" class="btn btn-block btn-primary">Switch</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </section>
+</div>
+{% endblock content %}

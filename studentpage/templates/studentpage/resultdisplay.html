@@ -1,0 +1,152 @@
+{% extends 'studentpage/main.html' %}
+{% load static %}
+{% block content %}
+<section class="mb-4">
+    <div class="container">
+        <div class="row mx-5">
+            <div class="col-lg-10 col-md-12 d-flex flex-column">
+
+                <div class="d-flex justify-content-center py-4">
+                    <a href="index.html" class="logo d-flex align-items-center w-auto">
+                        <!-- <img src="{% static 'school/assets/img/logo.png' %}" alt=""> -->
+                        <h1>{{config.school_name}}</h1>
+                    </a>
+                </div>
+            </div>
+            <!-- End Logo -->
+            
+            <div class="row mb-3 table-responsive-md" style="text-align: left;">
+                <h3>Personal Information</h3>
+                <table style="width: 60%;">
+                    <tr class="mb-3">
+                        <td class="text-muted">Student Name</td>
+                        <td>{{student.last_name}} {{student.first_name}}</td>
+                    </tr>
+                    <tr class="mb-3">
+                        <td class="text-muted">Student Number</td>
+                        <td>{{student.registration_number}}</td>
+                    </tr>
+                    <tr class="mb-3">
+                        <td class="text-muted">Student Class</td>
+                        <td>{{student.group}}{{student.arm}}</td>
+                    </tr>
+                    <tr class="mb-3">
+                        <td class="text-muted">Date of Birth</td>
+                        <td>{{student.dob}}</td>
+                    </tr>
+                    <tr class="mb-3">
+                        <td class="text-muted">Address</td>
+                        <td>{{student.address}}</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="row">
+                <h3>Subjects Report</h3>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Subjects</th>
+                        <th>CA1</th>
+                        <th>CA2</th>
+                        <th>CA3</th>
+                        <th>Project</th>
+                        <th>Test</th>
+                        <th>Exam</th>
+                        <th>Total</th>
+                        <th>Grade</th>
+                        <th>Remark</th>
+                        <th>Position</th>
+                    </tr>
+                    {% for record in record %}
+                    <tr>
+                        <td>{{record.subject}}</td>
+                        <td>{{record.CA1}}</td>
+                        <td>{{record.CA2}}</td>
+                        <td>{{record.CA3}}</td>
+                        <td>{{record.project}}</td>
+                        <td>{{record.test}}</td>
+                        <td>{{record.exam}}</td>
+                        <td>{{record.total}}</td>
+                        <td>{{record.grade}}</td>
+                        <td>{{record.remark}}</td>
+                        <td>{{record.position}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-12" style="text-align: left;">
+                    <h3>Term summary</h3>
+                    <table class="table">
+                        <tr class="mb-3">
+                            <td class="text-muted">Student Position</td>
+                            <td>{{result.position}}</td>
+                        </tr>
+                        <tr class="mb-3">
+                            <td class="text-muted">Total Score</td>
+                            <td>{{result.total}}</td>
+                        </tr>
+                        <tr class="mb-3">
+                            <td class="text-muted">Average Score</td>
+                            <td>{{result.average}}</td>
+                        </tr>
+                        <tr class="mb-3">
+                            <td class="text-muted">No. of days Present</td>
+                            <td>{{result.present}}</td>
+                        </tr>
+                        <tr class="mb-3">
+                            <td class="text-muted">No. of days Absent</td>
+                            <td>{{result.absent}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-12">
+                    <table class="table table-bordered">
+                        <h3>Management comment</h3>
+                        <tr>
+                            <th>Management</th>
+                            <th>Comment</th>
+                        </tr>
+                        {% if avg >= 70 %}
+                        {% for comment in comment %}
+                        <tr>
+                            <td>{{comment.owner}}</td>
+                            <td>{{comment.comment}}</td>
+                        </tr>
+                        {% endfor %}
+    
+                        {% elif avg >= 55 %}
+                        {% for comment in comment %}
+                        <tr>
+                            <td>{{comment.owner}}</td>
+                            <td>{{comment.comment}}</td>
+                        </tr>
+                        {% endfor %}
+    
+                        {% elif avg >= 40 %}
+                        {% for comment in comment %}
+                        <tr>
+                            <td>{{comment.owner}}</td>
+                            <td>{{comment.comment}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        {% for comment in comment %}
+                        <tr>
+                            <td>{{comment.owner}}</td>
+                            <td>{{comment.comment}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+        <div class="row mx-5">
+            <!-- <button type="button" class="btn btn-outline-primary d-print-none" onclick="window.print()">Print Result</button> -->
+            <a href="{% url 'studentresult_pdf' result.ref %}" class="btn btn-outline-primary">Print</a>
+        </div>
+    </div>
+</section>
+{% endblock content %}

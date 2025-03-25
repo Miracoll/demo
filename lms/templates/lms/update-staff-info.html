@@ -1,0 +1,53 @@
+{% extends 'lms/base.html' %}
+{% block content %}
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="pt-4 pb-2">
+            <h5 class="card-title text-center pb-0 fs-4">UPDATE ACCOUNT INFO</h5>
+        </div>
+        
+        <form method="POST" class="row g-3 needs-validation" novalidate>
+            {% csrf_token %}
+            <h3>PERSONNAL INFO</h3>
+            <div class="form-group has-validation">
+                <label for="">Date of Birth</label>
+                <input type="date" name="dob" class="form-control" required>
+            </div>
+            <h3>NEXT OF KIN INFO ({{staff.nok_full_name|upper}})</h3>
+            <div class="form-group">
+                <input type="radio" name="title" id="mr" value="Mr" checked>
+                <label for="mr" class="form-check-label">Mr</label>
+
+                <input type="radio" name="title" id="mrs" value="Mrs">
+                <label for="mrs" class="form-check-label">Mrs</label>
+
+                <input type="radio" name="title" id="master" value="Master">
+                <label for="master" class="form-check-label">Master</label>
+                
+                <input type="radio" name="title" id="miss" value="Miss">
+                <label for="miss" class="form-check-label">Miss</label>
+            </div>
+
+            <div class="form-group has-validation">
+                <label for="">What's the relationship?</label>
+                <select name="nok_relate" id="" class="form-control">
+                    <option value="">--Select a relationship--</option>
+                    <option value="Father">Father</option>
+                    <option value="Mother">Mother</option>
+                    <option value="Husband">Husband</option>
+                    <option value="Wife">Wife</option>
+                    <option value="Brother">Brother</option>
+                    <option value="Sister">Sister</option>
+                    <option value="Cousin">Cousin</option>
+                    <option value="Nephew">Nephew</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        
+            <div class="col-12">
+                <button class="btn btn-primary w-100" type="submit">UPDATE INFO</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

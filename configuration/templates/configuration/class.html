@@ -1,0 +1,154 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Class</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'viewclass' %}">manage class</a></li>
+        <li class="breadcrumb-item active">class</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="row">
+    <h3 class="text-center fw-bold">Manage class</h3>
+    <div class="col-12">
+        <div class="table-responsive-sm">
+            <table class="table">
+                <tr>
+                    <th>S/N</th>
+                    <th>Class</th>
+                    <th class="text-nowrap">Current class teacher</th>
+                    <th class="text-nowrap">No of students</th>
+                    <th>Action</th>
+                </tr>
+                {% for class in class %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td class="text-nowrap">{{class.group}} {{class.arm}} class</td>
+                    <td>
+                        {% if class.owner %}
+                        {{class.owner}}
+                        {% else %}
+                        <span class="text-danger text-nowrap"><i>No class teacher assign yet</i></span>
+                        {% endif %}
+                    </td>
+                    <td>{{class.number_of_student}}</td>
+                    <td>
+                        <p>
+                            <a href="{% url 'remove_class_teacher' class.id %}" class="btn btn-dark text-nowrap">Remove class teacher</a>
+                        </p>
+                        {% if class.active == 1 %}
+                        <a href="{% url 'deactivate_class' class.id %}" class="text-danger text-nowrap">Deactivate class</a>
+                        {% else %}
+                        <a href="{% url 'activate_class' class.id %}" class="text-primary text-nowrap">activate class</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="">
+        <a href="#Assign" class="btn btn-secondary col-lg-6 col-sm-12 my-1 w-100" data-toggle="modal">Assign class teacher</a>
+        <!-- <button type="button" class="btn btn-secondary">Add new class</button> -->
+        <div id="Assign" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Assign class teacher</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Content here -->
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12 my-1">
+                                    <input name="reg2" autocomplete="off" placeholder="Teacher registration number" class="form-control mb-2" type="text" required>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 my-1">
+                                    <!-- <input class="form-control mb-2" type="text" name="group" id=""> -->
+                                    <select name="allgroup2" class="form-control" id="" required>
+                                        <option value="">--Assign to which class?--</option>
+                                        {% for allclass in allclass %}
+                                        <option value="{{allclass.group}}">{{allclass.group}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 my-1">
+                                    <!-- <input class="form-control mb-2" type="text" name="group" id=""> -->
+                                    <select name="arm2" class="form-control" id="" required>
+                                        <option value="">--Assign to which arm?--</option>
+                                        {% for arm in arm %}
+                                        <option value="{{arm.arm}}">{{arm.arm}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 my-1">
+                                    <input class="form-control mb-2" type="file" accept="image/*" name="sign" id="">
+                                </div>
+                                <div class="col-12 my-1">
+                                    <input type="password" name="psw1" class="form-control" placeholder="Administrative password" required>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 my-1">
+                                    <button type="submit" class="btn btn-secondary btn-block" name="submit2">Grant access and assign</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <a href="#myUnit" class="btn  btn-secondary btn btn-secondary col-lg-6 col-sm-12 my-1 w-100" data-toggle="modal">Add unit class</a>
+        <!-- <button type="button" class="btn btn-secondary">Add new class</button> -->
+        <div id="myUnit" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add unit class</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12 my-1">
+                                    <!-- <input class="form-control mb-2" type="text" name="group" id=""> -->
+                                    <select name="allgroup" class="form-control" id="" required>
+                                        {% for allclass in allclass %}
+                                        <option value="{{allclass.group}}">{{allclass.group}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 my-1">
+                                    <!-- <input class="form-control mb-2" type="text" name="group" id=""> -->
+                                    <select name="arm" class="form-control" id="" required>
+                                        {% for arm in arm %}
+                                        <option value="{{arm.arm}}">{{arm.arm}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-12 my-1">
+                                    <input type="password" name="psw2" class="form-control" placeholder="Administrative password" required>
+                                </div>
+                                <div class="col-sm-12 my-1">
+                                    <button type="submit" class="btn btn-secondary btn-block" name="submit1">Grant access and create unit class</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

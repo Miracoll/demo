@@ -1,0 +1,68 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 d-flex flex-column align-items-center justify-content-center">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Create an Account for Student</h5>
+                <p class="text-center small">Enter next of kin details to create account</p>
+            </div>
+
+            <form action="" class="row g-3 needs-validation" novalidate method="POST">
+                {% csrf_token %}
+                
+                <div class="col-lg-6 col-md-12">
+                    <label class="">Relationship</label>
+                    <select name="relate" class="form-select" aria-label="Default select example">
+                        <option value="Brother">Brother</option>
+                        <option value="Sister">Sister</option>
+                        <option value="Cousin">Cousin</option>
+                        <option value="Nephew">Nephew</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="yourName" class="">Full Name</label>
+                    <input type="text" name="full_name" class="form-control" id="yourName" required>
+                    <div class="invalid-feedback">Please, enter next of kin full name!</div>
+                </div>
+
+                <div class="col-lg-6 col-md-12">
+                    <label for="yourEmail" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" id="yourEmail">
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <label for="yourEmail" class="form-label">Phone Number</label>
+                    <input type="number" name="mobile" class="form-control" id="yourEmail" required>
+                    <div class="invalid-feedback">Please, enter next of kin full name!</div>
+                </div>
+                <div class="col-12">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
+                    <textarea class="form-control" style="height: 70px" name="address" required></textarea>
+                    <div class="invalid-feedback">Please, enter your address!</div>
+                </div>
+                <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
+                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button name="nok" class="btn btn-primary w-100" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

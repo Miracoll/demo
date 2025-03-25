@@ -1,0 +1,27 @@
+{% extends "studentpage/main.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+    <!-- <div class="row">
+        <div class="col-md-12 col-lg-2">
+            <img class="rounded-circle" src="{{ user.profile.image.url }}" alt="{{ user.first_name }} {{ user.last_name }} photo" width="150" height="150">
+        </div>
+        <div class="col-md-12 col-lg-10">
+            <h4 class="">Username: {{ user.username }}</h4>
+            <h4 class="">Surname: {{ user.last_name }}</h4>
+            <h4 class="">Firstname: {{ user.first_name }}</h4>
+            <p>Email Address: {{ user.email }}</p>
+        </div>
+        <hr>
+    </div> -->
+    <div class="row">
+        <div class="col-12">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset>
+                    <legend>Profile info</legend>
+                    {{ profile|crispy }}
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

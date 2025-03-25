@@ -1,0 +1,42 @@
+{% extends 'lms/main.html' %}
+{% load humanize %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Term</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">term</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div>
+    <h3 class="text-center">Manage Term</h3>
+
+    <div>
+        <table class="table">
+            <tr>
+                <th>S/N</th>
+                <th>Term</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for term in term %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{term.term | ordinal}} Term</td>
+                {% if term.active == 1 %}
+                <td class="text-success">Active</td>
+                <td class="text-success">Currently active</td>
+                {% else %}
+                <td class="text-danger">Not active</td>
+                <td>
+                    <a href="{% url 'switchterm' term.ref %}">Activate now</a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock content %}

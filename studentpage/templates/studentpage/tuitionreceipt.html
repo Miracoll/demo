@@ -1,0 +1,70 @@
+{% extends 'studentpage/main.html' %}
+{% load static %}
+{% block content %}
+<div class="row my-4">
+    <div class="col-12 d-flex justify-content-center">
+        <h2>{{school}}</h2>
+    </div>
+    <div class="col-12 d-flex justify-content-center">
+        <h4>SCHOOL FEE RECEPT</h4>
+    </div>
+</div>
+{% comment %} <div class="row my-4">
+    <div class="col-sm-12">
+        <div class="d-flex post-entry d-flex justify-content-center">
+            <div class="custom-thumbnail">
+            <img src="{{user.profile.passport.url}}" alt="Image" class="img-fluid rounded-circle" width="150px" height="150px">
+            </div>
+        </div>
+    </div>
+</div> {% endcomment %}
+<div class="row d-flex justify-content-center my-4">
+    <div class="col-10">
+        {% for payment in payment %}
+        <div class="table-responsive-md">
+            <table class="table">
+                <tr>
+                    <td>Student Registraion Number</td>
+                    <td>{{ payment.student }}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Session</th>
+                    <td class="text-left">{{payment.session}}</td>
+                </tr>
+                <tr>
+                    <th class="text-left">Term</th>
+                    {% if payment.term == '1' %}
+                    <td class="text-left">First term</td>
+                    {% elif payment.term == '2' %}
+                    <td class="text-left">Second term</td>
+                    {% elif payment == '3' %}
+                    <td class="text-left">Third term</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <td>Student Class</td>
+                    <td>{{ payment.group }}{{ payment.arm }}</td>
+                </tr>
+                <tr>
+                    <td>Payment reference number</td>
+                    <td>{{ payment.ref }}</td>
+                </tr>
+                <tr>
+                    <td>Date of Payment</td>
+                    <td>{{ payment.paid_on }}</td>
+                </tr>
+                <tr>
+                    <td>Payment status</td>
+                    <td class="text-success">Successful</td>
+                </tr>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="row d-flex justify-content-center my-4">
+    <div class="col-12">
+        <button class="btn btn-success d-print-none btn-block" onclick="window.print()">Print</button>
+    </div>
+</div>
+{% endblock content %}

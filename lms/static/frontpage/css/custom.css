@@ -1,0 +1,24 @@
+/* Custom scrollbar*/
+
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+::-webkit-scrollbar-track{
+    background: #080049;
+}
+
+::-webkit-scrollbar-thumb{
+    background:  #F7B401;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:  #ffd35b;
+}
+
+.color1{
+    color: #F7B401;
+}
+.color2{
+    color: #080049;
+}

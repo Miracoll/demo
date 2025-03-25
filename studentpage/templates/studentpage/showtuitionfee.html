@@ -1,0 +1,77 @@
+{% extends 'studentpage/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+      {% for payment in payment %}
+      <div class="card text-center">
+        <div class="card-header">
+          TUITION FEE DETAILS
+        </div>
+        <div class="card-body">
+          <div class="table-responsive-sm">
+              <table class="table table-bordered ">
+                <tr>
+                  <th class="text-left">Payment for</th>
+                  <td class="text-left">Tuition fee</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Payment reference</th>
+                  <td class="text-left text-truncate">{{payment.ref}}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Amount</th>
+                  <td class="text-left">NGN {{tuition}}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Session</th>
+                  <td class="text-left">{{payment.session}}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Class</th>
+                  <td class="text-left">{{payment.group}}{{payment.arm}}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Term</th>
+                  {% if payment.term == '1' %}
+                  <td class="text-left">First term</td>
+                  {% elif payment.term == '2' %}
+                  <td class="text-left">Second term</td>
+                  {% elif payment.term == '3' %}
+                  <td class="text-left">Third term</td>
+                  {% endif %}
+                </tr>
+              </table>
+            </div>
+            <button class="btn btn-primary d-print-none btn-block" onclick="window.print()">Print Invoice</button>
+            <button class="btn btn-danger btn-block d-print-none" onclick="payWithPaystack()">Pay Now</button>
+          <script>
+            function payWithPaystack() {
+              var handler = PaystackPop.setup({
+                key: '{{public}}', // Replace with your public key
+                email: '{{request.user.email}}',
+                amount: {{tuition}} * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
+                currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+                ref: '{{payment.ref}}', // Replace with a reference you generated
+                callback: function(response) {
+                  //this happens after the payment is completed successfully
+                  window.location = "{% url 'tuitionreceipt' %}";
+                  // Make an AJAX call to your server with the reference to verify the transaction
+                },
+                onClose: function() {
+                  window.location = "{% url 'showtuition' %}";
+                },
+              });
+              handler.openIframe();
+            }
+          </script>
+        <!-- <div class="card-footer text-muted">
+          <small>GREEN PARK ACADEMY STUDENT PORTAL</small>
+        </div> -->
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+{% endblock content %}

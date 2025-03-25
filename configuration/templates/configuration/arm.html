@@ -1,0 +1,62 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Arm</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">Arm</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div>
+    <h3 class="text-center">Manage Arm</h3>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#arm">Create new arm</button>
+    <div>
+        <table class="table">
+            <tr>
+                <th>S/N</th>
+                <th>Arm</th>
+            </tr>
+            {% for arm in arm %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{arm.arm}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<div id="arm" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Session</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-sm-12 my-1">
+                            <label for="">Arm</label>
+                            <input name="arm" required placeholder="Type in class arm" type="text" class="form-control">
+                        </div>
+                        <div class="col-12 my-1">
+                            <label for="">Password</label>
+                            <input type="password" name="psw" class="form-control" placeholder="Administrative password" required>
+                        </div>
+                        <div class="col-sm-12 my-1">
+                            <button type="submit" name="submit" class="btn btn-block btn-secondary">Grant access and create arm</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+{% endblock content %}

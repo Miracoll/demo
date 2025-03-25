@@ -1,0 +1,28 @@
+{% extends 'lms/main.html' %}
+{% load humanize %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Backup</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">backup data</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div>
+    <h3 class="text-center">Backup Data</h3>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="alert alert-danger">
+                Pls do not interrupt the process
+            </div>
+            <button type="submit" class="btn btn-secondary w-100">
+                BACKUP NOW
+            </button>
+        </form>
+    <div>
+        
+    </div>
+</div>
+{% endblock content %}

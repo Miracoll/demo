@@ -1,0 +1,32 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 d-flex flex-column align-items-center justify-content-center">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+
+            
+            <div>
+                <h1 class="text-center">School configuration not yet setup, follow these steps to set it up</h1>
+                <ol>
+                    <li>Open the 'Configuration' section</li>
+                    <li>Select 'manage school'</li>
+                    <li>Enter school details</li>
+                    <li>Click on 'Setup' after filling for forms</li>
+                </ol>
+                <a href="{% url 'config' %}" class="btn btn-outline-primary">Manage school</a>
+            </div>
+            
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

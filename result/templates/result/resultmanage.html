@@ -1,0 +1,84 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>DOWNLOAD RESULT</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item">get subject result template</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+{% if user.profile.role.keyword == 'subject-teacher' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'controller' %}
+<section class="section register d-flex flex-column justify-content-center mb-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12 col-lg-6 d-flex flex-column justify-content-center">
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">DOWNLOAD SUBJECT RESULT</h5>
+            </div>
+            <form action="{% url 'result_template' %}" class="row g-3 needs-validation" novalidate method="POST">
+                {% csrf_token %}
+                <div class="col-lg-12 col-md-12">
+                    <select name="subject" class="form-select" aria-label="Default select example" required>
+                        <option value="">--Select subject--</option>
+                        {% for subject in subject %}
+                        <option value="{{subject.subject}}, {{subject.group}}, {{subject.arm}}">{{subject.group}}{{subject.arm}}---{{subject.subject}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button name="submit" class="btn btn-primary w-100" type="submit">Download</button>
+                </div>
+            </form>
+            <!-- <div>
+                <h5 class="card-title text-center pb-0 fs-4">Upload subject result file</h5>
+            </div>
+            <form action="" class="row g-3 needs-validation" novalidate method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form}}
+                <div class="col-lg-12 col-md-12">
+                    <select name="usub" class="form-select" aria-label="Default select example" required>
+                        <option value="">--Select subject--</option>
+                        {% for subject in subject %}
+                        <option value="{{subject.subject}}, {{subject.group}}, {{subject.arm}}">{{subject.subject}} ({{subject.group}}{{subject.arm}})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button name="csvupload" class="btn btn-primary w-100" type="submit">Upload class result</button>
+                </div>
+            </form> -->
+        </div>
+      </div>
+    </div>
+</section>
+{% endif %}
+{% if user.profile.role.keyword == 'class-teacher' or user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'controller' %}
+<section class="section register d-flex flex-column justify-content-center mb-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12 col-lg-6 d-flex flex-column justify-content-center">
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">DOWNLOAD CLASS RESULT</h5>
+            </div>
+            <form action="{% url 'result_template' %}" class="row g-3 needs-validation" novalidate method="POST">
+                {% csrf_token %}
+                <div class="col-12">
+                    <select name="group" class="form-select" aria-label="Default select example" required>
+                        <option value="">--Select class--</option>
+                        {% for group in group %}
+                        <option value="{{group.group}},{{group.arm}}">{{group.group}}{{group.arm}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button name="submit1" class="btn btn-primary w-100" type="submit">Download class result</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endif %}
+{% endblock content %}

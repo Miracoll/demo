@@ -1,0 +1,80 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12 col-md-12">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+          <div class="row">
+            <div class="col-12">
+                <form action="" class="row g-3 needs-validation" novalidate method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-5 mx-4 border-end">
+                            <h4 class="text-center text-danger text-upper fw-bold">CONFIRM PARENT/GUARDIAN INFO</h4>
+                                
+                            <div class="d-flex justify-content-center">
+                                <img src="{{parent.passport.url}}" alt="{{parent.last_name}} {{parent.first_name}} photo" width="180px" height="180px">
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h4 class="fw-bold">Parent Name:</h4>
+                                <h4>{{parent.last_name}} {{parent.first_name}}</h4>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <h4 class="fw-bold">Parent Address:</h4>
+                                <h4>{{parent.address}}</h4>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <h4 class="fw-bold">Parent Mobile:</h4>
+                                <h4>{{parent.mobile}}</h4>
+                            </div>
+                        </div>
+
+                        <div class="col-5 mx-4 border-start">
+                            <h4 class="text-center text-danger text-upper fw-bold">CONFIRM STUENT INFO</h4>
+                            <div class="d-flex justify-content-center">
+                                <img src="{{student.passport.url}}" alt="{{student.last_name}} {{student.first_name}} photo" width="180px" height="180px">
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h4 class="fw-bold">Student Name:</h4>
+                                <h4>{{student.last_name}} {{student.first_name}}</h4>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <h4 class="fw-bold">Student Class:</h4>
+                                <h4>{{student.group}}{{student.arm}}</h4>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <h4 class="fw-bold">Student Date of Birth:</h4><p class="text-danger">Request date of birth answer from parent as confirmation question</p>
+                                <h4>{{student.dob}}</h4>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input class="form-check-input" name="terms" type="checkbox" value="" id="assign" required>
+                            <label class="form-check-label fw-bold text-danger" for="assign">I confirmed the info before assigning</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button name="submit" class="btn btn-primary w-100" type="submit">Assign {{student.last_name}} {{student.first_name}} to {{parent.title}} {{parent.last_name}} {{parent.first_name}}</button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,48 @@
+{% extends 'studentpage/main.html' %}
+{% block content %}
+<div class="col-sm-12">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center">
+        <div class="card text-center col-12">
+            <div class="card-header">
+                RESULT CHECKER
+            </div>
+            <div class="card-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <select name="session" id="" class="form-control my-2" required>
+                        <option value="">--Select session--</option>
+                        {% for s in all_session %}
+                        <option value="{{s.ref}}" {% if s.active %}selected{% endif %}>
+                            {{s.session}} SESSION
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <select name="term" id="" class="form-control my-2" required>
+                        <option value="">--Select term--</option>
+                        <option value="1">First term</option>
+                        <option value="2">Second term</option>
+                        <option value="3">Third term</option>
+                        <option value="4">Anual</option>
+                    </select>
+                    <select name="group" id="" class="form-control my-2" required>
+                        <option value="">--Select class--</option>
+                        {% for group in all_group %}
+                        <option value="{{group.ref}}">{{group.group}} {{group.arm}}</option>
+                        {% endfor %}
+                    </select>
+                    <!-- <select name="arm" id="" class="form-control my-2" required>
+                        <option value="">--Select arm--</option>
+                        {% for arm in arm %}
+                        <option value="{{arm.arm}}">{{arm.arm}}</option>
+                        {% endfor %}
+                    </select> -->
+                    <input type="text" placeholder="Card pin" class="form-control my-2" name="pin" required>
+                    <input type="text" placeholder="Card serial number" class="form-control my-2" name="serial" required>
+                    <button class="btn btn-dark btn-block" type="submit">Check result</button>
+                </form>
+            </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

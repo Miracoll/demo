@@ -1,0 +1,156 @@
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NWAFOR ORIZU COLLEGE, DEMOSTRATION SECONDARY SCHOOL</title>
+  <link rel="shortcut icon" href="{% static 'frontpage/images/new_logo.png' %}" type="image/x-icon">
+  <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">  
+  <link rel="stylesheet" href="{% static 'frontpage/style.css' %}">
+  <!--<link rel="stylesheet" href="{% static 'frontpage/css/bootstrap.css' %}">-->
+  <link href="https://fonts.cdnfonts.com/css/geometr415-blk-bt" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/geometr415-blk-bt" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/beyond-the-mountains" rel="stylesheet">
+              
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Acme&family=Aladin&family=Amaranth&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,700;1,600&display=swap" rel="stylesheet">  -->
+</head>
+
+<body>
+  <div>
+    <!-- <nav>
+      <div class="container-fluid">
+          <div class="row nav">
+              <div class="col-12 nav-flex">
+                  <div class="nav-flex-1">
+                      <p><img src="{% static 'frontpage/images/Time.png' %}" alt=""></p>
+                      <span>COMMISIONERS QUARTERS, AGU-AWKA <br> AWKA-SOUTH LGA ANAMBRA STATE NIGERIA</span>
+                  </div>
+                  <div class="nav-flex-1">
+                      <p><img src="{% static 'frontpage/images/Phone.png' %}" alt=""></p>
+                      <span>08039-599-911 <br> 08096-324-002</span>
+                  </div>
+                  <div class="right">
+                      <img src="{% static 'frontpage/images/facebook.png' %}" alt="">
+                      <img src="{% static 'frontpage/images/Insta.png' %}" alt="">
+                      <img src="{% static 'frontpage/images/Twitter.png' %}" alt="">
+                  </div>
+              </div>
+          </div>
+      </div>
+  </nav> -->
+  <!-- navbar -->
+  <nav class="navbar py-3 navbar-light navbar-expand-xl">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarlinks">
+          <i class="fa-solid fa-bars"></i>
+      </button>
+      <a href="#" class="navbar-brand">
+        <img src="{% static 'frontpage/images/new_logo.png' %}" alt="">
+        NOCDSS
+      </a>
+      <div class="collapse navbar-collapse" id="navbarlinks">
+          <ul class="navbar-nav">
+              <li class="nav-item"><a href="{% url 'frontpage' %}" class="nav-link">HOME</a>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown">PORTAL</a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'studentdash' %}">STUDENT</a>
+                    <div class="dropdown-divider text-danger"></div>
+                    <a class="dropdown-item" href="{% url 'home' %}">STAFF</a>
+                    <div class="dropdown-divider text-danger"></div>
+                    <a class="dropdown-item" href="" data-bs-target="#alumni" data-bs-toggle="modal">ALUMNI</a>
+                  </div>
+                  <div class="modal" id="alumni">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                  
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                          <h4 class="modal-title">NOCDSS ALUMNI</h4>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                  
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                          <p class="text-center">COMING SOON</p>
+                        </div>
+                        
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              <li class="nav-item"><a href="{% url 'frontpage-about' %}" class="nav-link">ABOUT US</a>
+              </li>
+              <li class="nav-item"><a href="{% url 'frontpage-admission' %}" class="nav-link">ADMISSION</a>
+              </li>
+              <li class="nav-item"><a href="{% url 'frontpage-contact' %}" class="nav-link">CONTACT US</a>
+              </li>
+          </ul>
+      </div>
+    </nav>
+    <!-- end of navbar -->
+
+    <!--<Section id="header">
+         <div class="container">
+            <div class="row title">
+              <div class="col-12 center">
+                <h5><span style="font-size: larger;"> Welcome to</span> <br> SAINT MARY'S HIGH SCHOOL, IFITEDUNU</h5>
+              </div>
+            </div>
+          </div>
+    </Section>-->
+
+
+    {% block content %}{% endblock content %}
+
+    <!-- footer -->
+    <section id="footer">
+        <div class="container small-container">
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4 footer-1">
+                    <img src="{% static 'frontpage/images/new_logo.png' %}">
+                    <p>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. A labore officiis, quos quibusdam fuga ab impedit dolores deleniti accusamus rem ea id."</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 footer-2">
+                    <h5>Links</h5>
+                    <ul>
+                        <li><a href="#">Blog Post</a></li>
+                        <li><a href="#">Policy</a></li>
+                        <li><a href="#">Our Affiliate</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 footer-3">
+                    <h5>Follow us</h5>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">&#169; <script>document.write(new Date().getFullYear());</script> - Powered by SYSTEMCOG</p>
+        </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  
+  <script src="{% static 'frontpage/smooth-scroll.js' %}"></script>
+  <script>
+      const scroll = new SmoothScroll('a[href*="#"]');
+  </script>
+
+  <script src="{% static 'frontpage/js/jquery-3.6.0.min.js' %}"></script>
+  <script src="{% static 'frontpage/js/all.js' %}"></script>
+  <script src="{% static 'frontpage/js/bootstrap.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Subject</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">subject</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="row">
+    <div class="alert alert-info"><strong>Note:</strong>Create all classes before creating subjects for classes</div>
+    <h3 class="text-center">Manage Subject</h3>
+    <div class="col-12">
+        <table class="table">
+            <tr>
+                <th>S/N</th>
+                <th>Subject</th>
+                <th>Teacher in charge</th>
+                <th>Class</th>
+                <th>Arm</th>
+                <th>Action</th>
+            </tr>
+            {% for subject in subject %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{subject.subject}}</td>
+                <td>{{subject.teacher}}</td>
+                <td>{{subject.group}}</td>
+                <td>{{subject.arm}}</td>
+                <td>
+                    <a href="{% url 'remove_assign' subject.ref %}" class="btn btn-outline-secondary">Remove assign</a>
+                </td>
+                <!-- <td>
+                    <div class="col-6 text-center">
+                        <a href="#Reassign" class="btn btn-outline-secondary" data-toggle="modal">Re-assign</a>
+                        <div id="Reassign" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Re-assign teacher in charge</h5>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <div class="col-12 mb-2">
+                                                <input class="form-control" type="text" name="staff" placeholder="Enter staff registration number" id="">
+                                            </div>
+                                            <div class="col-12 mb-2">
+                                                <button type="submit" class="btn btn-primary btn-block">Re-assign</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td> -->
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-lg-4 col-sm-12 my-1">
+        <a href="#Subject" class="btn btn-secondary w-100" data-toggle="modal">Add new subject</a>
+        <!-- <button type="button" class="btn btn-secondary">Add new class</button> -->
+        <div id="Subject" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add new subject</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="option">Select subject</label>
+                                    <select name="subject" id="" required class="form-control mb-2">
+                                        <option value="" selected disabled>--Select subject--</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                        <option value="English Language">English Language</option>
+                                        <option value="Civic Education">Civic Education</option>
+                                        <option value="Igbo Language">Igbo Language</option>
+                                        <option value="Agricultural Science">Agricultural Science</option>
+                                        <option value="Basic Science">Basic Science</option>
+                                        <option value="History">History</option>
+                                        <option value="CRS">CRS</option>
+                                        <option value="Business Studies">Business Studies</option>
+                                        <option value="Cultural and Creative Art">Cultural and Creative Art</option>
+                                        <option value="Physical and Health Education">Physical and Health Education</option>
+                                        <option value="Security Education">Security Education</option>
+                                        <option value="French">French</option>
+                                        <option value="Basic Technology">Basic Technology</option>
+                                        <option value="Social Studies">Social Studies</option>
+                                        <option value="Home Economics">Home Economics</option>
+                                        <option value="Computer Studies">Computer Studies</option>
+                                        <option value="Prevocational Studies">Prevocational Studies</option>
+                                        <option value="Basic Science and Technology">Basic Science and Technology</option>
+                                        <option value="Physics">Physics</option>
+                                        <option value="Chemistry">Chemistry</option>
+                                        <option value="Biology">Biology</option>
+                                        <option value="Government">Government</option>
+                                        <option value="Economics">Economics</option>
+                                        <option value="Literature in English">Literature in English</option>
+                                        <option value="Data Processing">Data Processing</option>
+                                        <option value="Geography">Geography</option>
+                                        <option value="Visual Arts">Visual Arts</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Tourism">Tourism</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="option">Select category</label>
+                                    <select class="form-control" name="cat" id="" required>
+                                        <option value="">--Select category--</option>
+                                        {% for category in category %}
+                                        <option value="{{category.category}}">{{category.category}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="option">Select arm</label>
+                                    <select class="form-control" name="oarm" id="option">
+                                        <option value="">--Ignore if junior--</option>
+                                        <option value="SCIENCE">Science</option>
+                                        <option value="ART">Art</option>
+                                        <option value="BOTH">Both</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <label for="">Password</label>
+                                    <input type="password" name="psw1" class="form-control" placeholder="Administrative password" required>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-secondary" name="submit">Grant access and create</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-12 my-1">
+        <a href="#Assign" class="btn btn-secondary w-100" data-toggle="modal">Assign subject</a>
+        <!-- <button type="button" class="btn btn-secondary">Add new class</button> -->
+        <div id="Assign" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Assign subject</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-12 col-sm-12 mt-3">
+                                    <select class="form-control" name="subject" id="" required>
+                                        <option value="">--Select subject--</option>
+                                        {% for subject in allsubject %}
+                                        <option value="{{subject.subject}}, {{subject.category}}">{{subject.subject}} ({{subject.category}} category)</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <!-- <div class="col-lg-12 col-sm-12 mt-3">
+                                    <select class="form-control" name="cat" id="" required>
+                                        <option value="">--Select category--</option>
+                                        <option value="Junior">Junior</option>
+                                        <option value="Senior">Senior</option>
+                                    </select>
+                                </div> -->
+                                <div class="col-lg-12 col-sm-12 mt-3">
+                                    <!-- <input class="form-control mb-2" type="text" name="cat" placeholder="" id=""> -->
+                                    <select class="form-control" name="group" id="" required>
+                                        <option value="">--Select class--</option>
+                                        {% for group in group %}
+                                        <option value="{{group.group}}">{{group.group}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 mt-3">
+                                    <!-- <input class="form-control mb-2" type="text" name="cat" placeholder="" id=""> -->
+                                    <select class="form-control" name="arm" id="" required>
+                                        <option value="">--Select arm--</option>
+                                        {% for arm in arm %}
+                                        <option value="{{arm.arm}}">{{arm.arm}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 mt-3">
+                                    <input class="form-control mb-2" type="text" name="teacher" placeholder="Subject teacher reg number" id="">
+                                </div>
+                                <div class="col-12">
+                                    <label for="">Password</label>
+                                    <input type="password" name="psw2" class="form-control" placeholder="Administrative password" required>
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-block btn-secondary" name="submit1">Grant access and assign</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-12 my-1">
+        <a href="#View" class="btn btn-secondary w-100" data-toggle="modal">View all subject</a>
+        <!-- <button type="button" class="btn btn-secondary">Add new class</button> -->
+        <div id="View" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">View all subject</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-stripped datatable">
+                            <tr>
+                                <th>Subject</th>
+                                <th>Category</th>
+                                <th>Active</th>
+                            </tr>
+                            {% for allsubject in allsubject %}
+                            <tr style="text-align: left;">
+                                <td>{{ allsubject.subject }}</td>
+                                <td>{{ allsubject.category }}</td>
+                                <td>{{ allsubject.active | yesno }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

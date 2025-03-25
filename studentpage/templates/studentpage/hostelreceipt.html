@@ -1,0 +1,53 @@
+{% extends 'studentpage/main.html' %}
+{% load static %}
+{% block content %}
+{% for payment in payment %}
+<div class="row my-4">
+    <div class="col-12 d-flex justify-content-center">
+        <h2>{{config.school_name}}</h2>
+    </div>
+</div>
+<div class="row my-4">
+    <div class="col-12 d-flex justify-content-center">
+        <h4>HOSTEL PAYMENT FEE RECEIPT</h4>
+    </div>
+</div>
+<div class="row d-flex justify-content-center my-4">
+    <div class="col-10">
+        <table class="table">
+            <tr>
+                <td>Student Registraion Number</td>
+                <td>{{ payment.occupant }}</td>
+            </tr>
+            <tr>
+                <td>Hostel</td>
+                <td>{{ payment.hostel }}</td>
+            </tr>
+            <tr>
+                <td>Student Class</td>
+                <td>{{ payment.group }}{{ payment.arm }}</td>
+            </tr>
+            <tr>
+                <td>Payment reference number</td>
+                <td>{{ payment.ref }}</td>
+            </tr>
+            <tr>
+                <td>Date of Payment</td>
+                <td>{{ payment.paid_on }}</td>
+            </tr>
+            <tr>
+                <td>Payment status</td>
+                <td class="text-success">Successful</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="row d-flex justify-content-center my-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-around">
+            <button class="btn btn-success d-print-none btn-block" onclick="window.print()">Print</button>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,73 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Manage Application</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Start applicant registration</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<section class="section register">
+    <div class="container">
+        <div class="row justify-content-center">
+            {% if config.entry == 0 %}
+            <div class="col-lg-6 col-md-6 mt-3">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-outline-primary btn-block" data-bs-toggle="modal" data-bs-target="#startstop">Start applicant registration</button>
+                </form>
+            </div>
+            <div class="mt-3">
+                Status: <span class="text-danger">Not active</span>
+            </div>
+            {% else %}
+            <div class="col-lg-6 col-md-6 mt-3">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="stop" class="btn btn-outline-danger btn-block">Stop applicant registration</button>
+                </form>
+            </div>
+            <div class="mt-3">
+                Status: <span class="text-success">Active</span>
+            </div>
+            {% endif %}
+        </div>
+      
+    </div>
+</section>
+  
+<!-- The Modal -->
+<div class="modal" id="startstop">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">WARNING!!!</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h5>Proceeding with this action will trigger the following:</h5>
+                <ol>
+                    <li>Stop and deactivate result computation</li>
+                    <li>Start applicant registration</li>
+                    <li>Stop switching term and session</li>
+                </ol>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="start" class="btn btn-outline-primary btn-block">Proceed</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

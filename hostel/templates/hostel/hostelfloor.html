@@ -1,0 +1,56 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 d-flex flex-column align-items-center">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Setup hostel floor</h5>
+                <!-- <p class="text-center small">Enter hostel details</p> -->
+            </div>
+            
+            <table class="table table-striped">
+                <tr>
+                    <th>S/N</th>
+                    <th>Floor Number</th>
+                    <th>Hostel Name</th>
+                    <th>Number of Room</th>
+                    <th>Action</th>
+                </tr>
+                {% for floor in floor %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <td>
+                            <input type="text" value="{{ floor.floor }}" name="floor" readonly class="form-control">
+                        </td>
+                        <td>
+                            <input type="text" value="{{ floor.hostel_id.hostel_name }}" name="hostel" readonly class="form-control">
+                        </td>
+                    
+                        <td>
+                            <input type="number" value="{{ floor.number_of_room }}" name="room" class="form-control" title="Use enter key or apply button to apply">
+                        </td>
+                        <td>
+                            <!-- <a href="">Apply</a> -->
+                            <button type="submit" class="btn btn-primary" name="{{floor.floor}}-{{floor.hostel_id.hostel_name}}">Apply</button>
+                        </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

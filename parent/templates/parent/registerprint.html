@@ -1,0 +1,80 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 d-flex flex-column align-items-center justify-content-center">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+            <!-- End Logo -->
+            {% for student in student %}
+            <h1 class="text-uppercase">{{config.school_name}}</h1>
+            <p>{{config.school_address}}</p>
+            <div class="row">
+                
+            </div>
+            <div class="row">
+                <h4 class="text-dark text-left">PERSONAL INFOMATION</h4><hr>
+                <div class="col-12 d-flex justify-content-center">
+                    <img src="{{student.passport.url}}" alt="" width="130" height="130" class="float-left">
+                </div>
+                <div class="col-12">
+                    <table class="table">
+                        <tr>
+                            <td>Last Name:</td>
+                            <td>{{student.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>First Name:</td>
+                            <td>{{student.first_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Other Name(s):</td>
+                            <td>{{student.other_name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Date of birth:</td>
+                            <td>{{student.dob}}</td>
+                        </tr>
+                        <tr>
+                            <td>Gender:</td>
+                            <td>{{student.sex}}</td>
+                        </tr>
+                        <tr>
+                            <td>Address:</td>
+                            <td>{{student.address}}</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile:</td>
+                            <td>{{student.mobile}}</td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td>{{student.email}}</td>
+                        </tr>
+                        <tr>
+                            <td>Identity:</td>
+                            <td>Staff</td>
+                        </tr>
+                        <tr>
+                            <td>Staff identity number:</td>
+                            <td>{{student.registration_number}}</td>
+                        </tr>
+                    </table>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-primary" onclick="window.print()">Print Application Slip</button>
+                        <a href="{% url 'register_teacher' %}" class="text-danger">New registration</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

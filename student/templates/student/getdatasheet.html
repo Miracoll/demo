@@ -1,0 +1,49 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register">
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-12">
+            {% if not students %}
+            <p class="text-center text-danger"><i>No student</i></p>
+            {% else %}
+            <div class="">
+                <h1 class="text-center">{{group.group}} {{group.arm}} CLASS REG NUMBER LIST</h1>
+            </div>
+            <div class="d-print-none d-flex justify-content-between">
+                <a href="{% url 'select-datasheet' %}" class="btn btn-danger">Back</a>
+                <form action="" method="post">
+                    {%  csrf_token %}
+                    <!-- <button type="button" onclick="window.print()" class="btn btn-primary">print class list</button> -->
+                    <!-- <button type="submit" class="btn btn-primary">print class list</button> -->
+                </form>
+                
+            </div>
+            <table class="table">
+                <tr>
+                    <th>S/N</th>
+                    <th>Passport</th>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Other Name</th>
+                    <th>Registration number</th>
+                    <th>Date of Birth</th>
+                </tr>
+                {% for s in students %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img src="{{s.passport.url}}" alt="" class="img-fluid" style="width: 180px; height: 180px;"></td>
+                    <td>{{s.last_name|upper}}</td>
+                    <td>{{s.first_name|upper}}</td>
+                    <td>{{s.other_name|upper}}</td>
+                    <td>{{s.registration_number}}</td>
+                    <td>{{s.dob}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

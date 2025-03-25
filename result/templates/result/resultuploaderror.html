@@ -1,0 +1,17 @@
+{% extends 'lms/main.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+
+    <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+        <h1 class="text-danger">Upload error</h1>
+        <h2>Try</h2>
+        <ol>
+            <li>Try to update(save) the csv file using ctrl+s</li>
+        </ol>
+        <a class="btn" href="{% url 'result_upload' %}">Back to upload</a>
+        <img src="{% static 'school/assets/img/not-found.svg' %}" class="img-fluid py-5" alt="Page Not Found">
+    </section>
+
+  </div>
+{% endblock content %}

@@ -1,0 +1,47 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Manage upload</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">unlock upload</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<section class="section register">
+    <hr>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>S/N</th>
+                            <th>Subject</th>
+                            <th>Class</th>
+                            <th>Action</th>
+                        </tr>
+                        {% for staff in staff %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{ staff.subject }}</td>
+                            <td>{{staff.group}}{{staff.arm}}</td>
+                            {% if staff.lock == 1 %}
+                            <td>
+                                <a href="{% url 'unlock_result' staff.id %}" class="btn btn-outline-success">Unlock result</a>
+                            </td>
+                            {% else %}
+                            <td>
+                                <span class="text-danger">No upload yet</span>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

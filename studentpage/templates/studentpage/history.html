@@ -1,0 +1,86 @@
+{% extends 'studentpage/main.html' %}
+{% load humanize %}
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Your payment history</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Payment</th>
+                        <th>Reference number</th>
+                        <th>Session</th>
+                        <th>Term</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Payment</th>
+                        <th>Reference number</th>
+                        <th>Session</th>
+                        <th>Term</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for tuition in tuition %}
+                    <tr>
+                        <td>Tuition fee</td>
+                        <td>{{tuition.ref}}</td> 
+                        <td>{{tuition.session}}</td>
+                        {% if tuition.term == '1' %}
+                        <td class="text-left">First</td>
+                        {% elif tuition.term == '2' %}
+                        <td class="text-left">Second</td>
+                        {% elif tuition.term == '3' %}
+                        <td class="text-left">Third</td>
+                        {% endif %}
+                        {% if tuition.amount_paid %}
+                        <td>NGN {{tuition.amount_paid | intcomma}}</td>
+                        {% else %}
+                        <td class="text-danger">-</td>
+                        {% endif %}
+                        {% if tuition.status == 1 %}
+                        <td class="text-success">Paid</td>
+                        {% else %}
+                        <td class="text-danger">Not paid</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    <!--For hostel-->
+                    {% for hostel in hostel %}
+                    <tr>
+                        <td>{{hostel.hostel}}</td>
+                        <td>{{hostel.ref}}</td>
+                        <td>{{hostel.session}}</td>
+                        {% if hostel.term == '1' %}
+                        <td class="text-left">First</td>
+                        {% elif hostel.term == '2' %}
+                        <td class="text-left">Second</td>
+                        {% elif hostel.term == '3' %}
+                        <td class="text-left">Third</td>
+                        {% endif %}
+                        {% if hostel.amount_paid %}
+                        <td>NGN {{hostel.amount_paid | intcomma}}</td>
+                        {% else %}
+                        <td class="text-danger">-</td>
+                        {% endif %}
+                        {% if hostel.status == 1 %}
+                        <td class="text-success">Paid</td>
+                        {% else %}
+                        <td class="text-danger">Not paid</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

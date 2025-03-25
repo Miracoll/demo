@@ -1,0 +1,59 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Manage Subject Result</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">upload subject result</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+{% if user.profile.role.keyword == 'subject-teacher' or user.profile.role.keyword == 'admin' %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-12 d-flex flex-column align-items-center justify-content-center">
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+            <!-- End Logo -->
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Upload subject result file</h5>
+            </div>
+            <form action="" class="row g-3 needs-validation" novalidate method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form}}
+                <div class="col-6">
+                    <button name="csvupload" class="btn btn-primary w-100" type="submit">Upload class result</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endif %}
+{% if user.profile.role.keyword == 'class-teacher' or user.profile.role.keyword == 'admin' %}
+<section class="section register d-flex flex-column align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-12 d-flex flex-column align-items-center justify-content-center">
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Upload class result file</h5>
+            </div>
+            <form action="" class="row g-3 needs-validation" novalidate method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form}}
+                <div class="col-6">
+                    <button name="csvupload1" class="btn btn-primary w-100" type="submit">Upload class result</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endif %}
+{% endblock content %}

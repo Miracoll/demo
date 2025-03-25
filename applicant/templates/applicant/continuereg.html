@@ -1,0 +1,30 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section registerr">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Enter application number to continue registration</h5>
+            </div>
+            <form action="" class="row g-3 needs-validation" novalidate method="POST">
+                {% csrf_token %}
+                <div class="col-12">
+                    <input type="text" placeholder="APP_00xxx" name="email" id="email" class="form-control" required>
+                    <button name="submit" class="btn btn-primary btn-block my-3" type="submit">Continue registration</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

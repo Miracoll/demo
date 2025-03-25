@@ -1,0 +1,102 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Manage Result</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Start result computation</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<section class="section register">
+    <div class="container">
+        <div class="row justify-content-center">
+            {% if config.start_result == 0 %}
+            <div class="col-lg-6 col-md-6 mt-3">
+                <button type="button" class="btn btn-outline-primary btn-block" data-bs-toggle="modal" data-bs-target="#info">
+                    Start result computation
+                </button>
+            </div>
+            <div class="mt-3">
+                Status: <span class="text-danger fw-bold">Not active</span>
+            </div>
+            {% else %}
+            <div class="col-lg-6 col-md-6 mt-3">
+                <button type="button" class="btn btn-outline-primary btn-block" data-bs-toggle="modal" data-bs-target="#stop">
+                    Stop result computation
+                </button>
+            </div>
+            <div class="mt-3">
+                Status: <span class="text-success fw-bold">Active</span>
+            </div>
+            {% endif %}
+        </div>
+      
+    </div>
+</section>
+<!-- The Modal -->
+<div class="modal" id="info">
+    <div class="modal-dialog">
+        <div class="modal-content">
+    
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title text-danger"><strong>WARNING!!!</strong></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            
+            
+            <form action="" method="post">
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <h5 class="fw-bold">Proceeding with this action will trigger the following:</h5>
+                    <ol>
+                        <li class="fw-bold">Start and activate result computation</li>
+                        <li class="fw-bold">Stop registration</li>
+                        <li class="fw-bold">Stop switching term and session</li>
+                    </ol>
+                    <p class="text-danger fw-bold">Pls activate all students that will be part of this result computation</p>
+                    {% csrf_token %}
+                    <input type="password" name="psw1" class="form-control mx-2" placeholder="Administrative password" autofocus required>
+                </div>
+        
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" name="start" class="btn btn-outline-primary btn-block">Proceed</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="stop">
+    <div class="modal-dialog">
+        <div class="modal-content">
+    
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title text-danger"><strong>WARNING!!!</strong></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            
+            <form action="" method="post">
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <h5 class="fw-bold">Proceeding with this action will trigger the following:</h5>
+                    <ol>
+                        <li class="fw-bold">Stop and reset result computation</li>
+                    </ol>
+                    {% csrf_token %}
+                    <input type="password" name="psw2" class="form-control mx-2" placeholder="Administrative password" autofocus required>
+                </div>
+        
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" name="stop" class="btn btn-outline-danger btn-block">Stop result computation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

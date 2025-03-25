@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>{{config.school_initial}} Student Result</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+<style>
+    @page {
+        /*size: a4 landscape;*/
+        size: a4 portrait;
+        background-image: url('{{STATIC_ROOT}}/images/bg.jpg');
+        background-repeat: no-repeat;
+        background-position:center;
+        width: 100%;
+        height: 297mm;
+        margin: 2cm;
+    }
+    table,td{
+        border: 0px solid black;
+        border-collapse: collapse;
+    }
+    table{
+        margin-bottom: 15px;
+    }
+    h1{
+        text-align: center;
+        font-size: 3em;
+        color: rgb(118, 67, 165);
+    }
+    h2{
+        text-align: center;
+        font-size: 2em;
+        color: rgb(118, 67, 165);
+    }
+    p{
+        color: rgb(13, 46, 95);
+        text-align: center;
+        font-size: 1.5em;
+        text-transform: uppercase;
+    }
+    h3{
+        color: rgb(13, 46, 95);
+        font-size: 15px;
+        text-transform: uppercase;
+        border-bottom: 1px solid black;
+    }
+    td,th{
+        padding: 1px;
+        font-size: larger;
+    }
+    th{
+        text-align: left;
+    }
+    td{
+        font-size: 11px;
+    }
+    img{
+        zoom:50%;
+    }
+    footer{
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<section>
+    <div>
+        <div>
+            <div>
+                <table>
+                    <tr>
+                        <td style="width: 15%;" rowspan="2">
+                            <img src="{{STATIC_ROOT}}/images/logo1.jpg" alt="">
+                        </td>
+                        <td>
+                            <h1>{{config.school_name}}</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>{{config.school_address}}</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- End Logo -->
+            <!-- <hr> -->
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <h2>STUDENT TERMLY RESULT SHEET</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <h3>PERSONAL INFORMATION</h3>
+                    </td>
+                </tr>
+                <tr class="mb-3">
+                    <th class="text-muted">Student Name</th>
+                    <td>{{student.last_name}} {{student.first_name}}</td>
+                </tr>
+                <tr class="mb-3">
+                    <th class="text-muted">Student Number</th>
+                    <td>{{student.registration_number}}</td>
+                </tr>
+                <tr class="mb-3">
+                    <th class="text-muted">Student Class</th>
+                    <td>{{student.group}}{{student.arm}}</td>
+                </tr>
+                <tr class="mb-3">
+                    <th class="text-muted">Date of Birth</th>
+                    <td>{{student.dob}}</td>
+                </tr>
+                <tr class="mb-3">
+                    <th class="text-muted">Address</th>
+                    <td>{{student.address}}</td>
+                </tr>
+            </table>
+
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td colspan="11">
+                        <h3>SUBJECTS REPORT</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Subjects</th>
+                    <th>CA1</th>
+                    <th>CA2</th>
+                    <th>CA3</th>
+                    <th>Project</th>
+                    <th>Test</th>
+                    <th>Exam</th>
+                    <th>Total</th>
+                    <th>Grade</th>
+                    <th>Remark</th>
+                    <th>Position</th>
+                </tr>
+                {% for record in record %}
+                <tr>
+                    <td style="width: 33%;">{{record.subject}}</td>
+                    <td style="width: 5%;">{{record.CA1|floatformat}}</td>
+                    <td style="width: 5%;">{{record.CA2|floatformat}}</td>
+                    <td style="width: 5%;">{{record.CA3|floatformat}}</td>
+                    <td style="width: 8%;">{{record.project|floatformat}}</td>
+                    <td style="width: 5%;">{{record.test|floatformat}}</td>
+                    <td style="width: 7%;">{{record.exam|floatformat}}</td>
+                    <td style="width: 7%;">{{record.total|floatformat}}</td>
+                    <td style="width: 7%;">{{record.grade}}</td>
+                    <td style="width: 8%;">{{record.remark}}</td>
+                    <td style="width: 10%;">{{record.position}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div>
+            {% for result in result %}
+            <table class="table">
+                <tr>
+                    <td colspan="2">
+                        <h3>TERM SUMMARY</h3>
+                    </td>
+                </tr>
+                <tr class="mb-3">
+                    <td class="text-muted">Student Position</td>
+                    <td>{{result.position}}</td>
+                </tr>
+                <tr class="mb-3">
+                    <td class="text-muted">Total Score</td>
+                    <td>{{result.total|floatformat}}</td>
+                </tr>
+                <tr class="mb-3">
+                    <td class="text-muted">Average Score</td>
+                    <td>{{result.average|floatformat}}</td>
+                </tr>
+                <tr class="mb-3">
+                    <td class="text-muted">No. of days Present</td>
+                    <td>{{result.present}}</td>
+                </tr>
+                <tr class="mb-3">
+                    <td class="text-muted">No. of days Absent</td>
+                    <td>{{result.absent}}</td>
+                </tr>
+            </table>
+            {% endfor %}
+                <div class="col-lg-7 col-md-12">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td colspan="2">
+                                <h3>COMMENT</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Management</th>
+                            <th>Comment</th>
+                        </tr>
+                        {% if avg >= 70 %}
+                        {% for comment in comment %}
+                        <tr>
+                            <td>{{comment.owner}}</td>
+                            <td>{{comment.comment}}</td>
+                        </tr>
+                        {% endfor %}
+    
+                        {% elif avg >= 55 %}
+                        {% for comment in comment %}
+                        <tr>
+                            <td>{{comment.owner}}</td>
+                            <td>{{comment.comment}}</td>
+                        </tr>
+                        {% endfor %}
+    
+                        {% elif avg >= 40 %}
+                        {% for comment in comment %}
+                        <tr>
+                            <td>{{comment.owner}}</td>
+                            <td>{{comment.comment}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        {% for comment in comment %}
+                        <tr>
+                            <td>{{comment.owner}}</td>
+                            <td>{{comment.comment}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </table>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</section>
+ </main><!-- End #main -->
+ <footer>
+     <table>
+         <tr>
+             <td>
+                &copy; Copyright <strong><span>SYSTEMCOG</span></strong>. All Rights Reserved
+             </td>
+         </tr>
+         <tr>
+             <td>
+                Designed by <a href="">SYSTEMCOG DEVELOPERS</a>
+             </td>
+         </tr>
+     </table>
+  </footer><!-- End Footer -->
+</body>
+
+</html>

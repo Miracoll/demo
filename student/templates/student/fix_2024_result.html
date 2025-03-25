@@ -1,0 +1,153 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<section class="section register">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12 mb-5">
+                <div>
+                    <h5 class="card-title text-center pb-0 fs-4">Select class</h5>
+                </div>
+                <form action="" class="row g-3 needs-validation" novalidate method="GET">
+                    {% csrf_token %}
+                    <div class="col-lg-12 col-md-12">
+                        <select name="group" id="" class="form-control">
+                            <option value="">--select class--</option>
+                            {% for g in allgroup %}
+                            <option value="{{g.ref}}">{{g.group}} {{g.arm}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button name="submit" class="btn btn-primary w-100" type="submit">GET STUDENT</button>
+                    </div>
+                </form>
+            </div>
+            <hr>
+            {% if student_data %}
+            <div class="d-flex justify-content-end">
+                <Button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#comment">Update Comment</Button>
+                <Button type="button" class="btn btn-danger mx-3" data-bs-toggle="modal" data-bs-target="#myModal">Fix Result</Button>
+                <div class="modal" id="myModal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                  
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                          <h4 class="modal-title">Warning!!!</h4>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                  
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                          This action may change the value of student result.
+                          <p>Do you want to continue?</p>
+                        </div>
+                  
+                        <!-- Modal footer -->
+                        <div class="modal-footer justify-content-between">
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                          <form action="" method="post">
+                            {% csrf_token %}
+                              <button type="submit" class="btn btn-primary" name="fix" >Proceed</button>
+                          </form>
+                        </div>
+                  
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal" id="comment">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                  
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                          <h4 class="modal-title">Update comment</h4>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                  
+                        <!-- Modal body -->
+                        <form action="" method="post">
+                            <div class="modal-body">
+                                {% csrf_token %}
+                                <h5 class="text-center">Principal's Comment</h5>
+                                <input type="text" name="p1" id="p1" placeholder="Average score greater than 70" class="form-control my-2">
+                                <input type="text" name="p2" id="p2" placeholder="Average score between 55 to 69" class="form-control my-2">
+                                <input type="text" name="p3" id="p3" placeholder="Average score between 40 to 54" class="form-control my-2">
+                                <input type="text" name="p4" id="p4" placeholder="Average score less than 40" class="form-control my-2">
+                                <br>
+                                <hr>
+                                <br>
+                                <h5 class="text-center">Form Teacher's Comment</h5>
+                                <input type="text" name="t1" id="t1" placeholder="Average score greater than 70" class="form-control my-2">
+                                <input type="text" name="t2" id="t2" placeholder="Average score between 55 to 69" class="form-control my-2">
+                                <input type="text" name="t3" id="t3" placeholder="Average score between 40 to 54" class="form-control my-2">
+                                <input type="text" name="t4" id="t4" placeholder="Average score less than 40" class="form-control my-2">
+                            </div>
+                            
+                            <!-- Modal footer -->
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" name="comment" >Save</button>
+                            </div>
+                        </form>
+                  
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            {% endif %}
+            <div>
+                {% if student_data %}
+                <table class="table" style="overflow-x: auto;">
+                    <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>Reg Number</th>
+                            <th>Total Score</th>
+                            <th>Average Score</th>
+                            <th>Remark</th>
+                            <th>Position</th>
+                            <th>Form Teacher Comment</th>
+                            <th>Principal's Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in student_data %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ data.student.last_name }} {{ data.student.first_name }}</td>
+                            <td>{{ data.student.registration_number }}</td>
+                            <td>{{ data.total_score|default:"-" }}</td>
+                            <td>{{ data.average_score|default:"-" }}</td>
+                            <td>{{ data.remark|default:"-" }}</td>
+                            <td>{{ data.position|default:"-" }}</td>
+                            <td>{{ data.teacher_comment|default:"-" }}</td>
+                            <td>{{ data.principal_comment|default:"-" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>Reg Number</th>
+                            <th>Total Score</th>
+                            <th>Average Score</th>
+                            <th>Remark</th>
+                            <th>Position</th>
+                            <th>Form Teacher Comment</th>
+                            <th>Principal's Comment</th>
+                        </tr>
+                    </tfoot>
+                </table>
+                {% else %}
+                <p class="text-center">No data available for the selected class.</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,59 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Manage Card</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item">manage card</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<section class="section register d-flex flex-column mb-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 d-flex flex-column">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">Number of card(s) to generate</h5>
+            </div>
+            <form action="" class="row g-3 needs-validation" novalidate method="POST">
+                {% csrf_token %}
+                <div class="col-lg-12 col-md-12 mb-2">
+                    <select name="term" id="" required class="form-control">
+                        <option value="" disabled selected>--select type--</option>
+                        <option value="0">Not Annual with students data</option>
+                        <option value="1">Not Annual without students data</option>
+                        <option value="2">Annual with students data</option>
+                        <option value="3">Annual without students data</option>
+                    </select>
+                </div>
+                <div class="col-lg-12 col-md-12 mb-2">
+                    <input type="checkbox" name="ss3" id="js3" checked>
+                    <label for="js3">Include SS3 and JS3</label><br>
+                    <small class="text-danger">Use only if you are printing with student data, Ignore if otherwise</small>
+                </div>
+                <div class="col-lg-12 col-md-12 mb-2">
+                    <input type="number" name="npin" value="0" class="form-control" autofocus placeholder="Enter number of card(s)">
+                    <small class="text-danger">Use only if you are <strong>not</strong> printing with student data, Ignore if otherwise</small>
+                </div>
+                <div class="col-lg-12 col-md-12 mb-2">
+                    <input type="password" name="pass" class="form-control" placeholder="Enter Administrative Password" required>
+                </div>
+                <div class="col-12">
+                    <button name="submit" class="btn btn-success w-100" type="submit">Generate</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,33 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Create arm</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'arm' %}">arm</a></li>
+        <li class="breadcrumb-item active">create arm</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div>
+    <h3 class="text-center">Manage Arm</h3>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-6">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <input name="arm" required placeholder="Type in class arm" type="text" class="form-control">
+                        </div>
+                        <div class="col-sm-12 mt-3">
+                            <button type="submit" name="submit" class="btn btn-block btn-primary">Create</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </section>
+</div>
+{% endblock content %}

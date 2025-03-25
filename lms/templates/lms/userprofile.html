@@ -1,0 +1,71 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>User Profile</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item">profile</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div>
+    <div>
+        <div class="row bg-dark text-light my-4">
+            <div class="col-12 d-flex justify-content-center">
+                <h1 class="text-upper">{{config.school_name}}</h1>
+            </div>
+            <p class="text-center">{{config.school_address}}</p>
+        </div>
+        <div class="row">
+            <h2>Personal information</h2>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <img src="{{ user.profile.passport.url }}" alt="{{user.last_name}} {{user.first_name}} photo" width="200px" height="200px">
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-6">
+                <h3>Surname</h3>
+            </div>
+            <div class="col-6">
+                <h4>{{user.last_name}}</h4>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-6">
+                <h3>Firstname</h3>
+            </div>
+            <div class="col-6">
+                <h4>{{user.first_name}}</h4>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-6">
+                <h3>Othername(s)</h3>
+            </div>
+            <div class="col-6">
+                <h4>{{user.other_name}}</h4>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-6">
+                <h3>Role</h3>
+            </div>
+            <div class="col-6">
+                <h4>{{user.profile.role.role}}</h4>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-6">
+                <h3>Registration Number</h3>
+            </div>
+            <div class="col-6">
+                <h4>{{user.username}}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

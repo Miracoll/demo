@@ -1,0 +1,222 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Manage Staff</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item">manage staff</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+{% for student in staff %}
+<section class="section profile">
+    <div class="row">
+        <div class="col-xl-4">
+
+            <div class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    <img src="{{ student.passport.url }}" alt="Profile" class="rounded-circle">
+                    <h2>{{student.last_name}} {{student.first_name}}</h2>
+                    <h3>Staff</h3>
+                    <div class="social-links mt-2">
+                        <a href="{{student.twitter}}" class="twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="{{student.facebook}}" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="{{student.instagram}}" class="instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="{{student.linkedin}}" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" name="change" class="btn btn-outline-primary btn-lg btn-block mb-2">Transfer student</button>
+                <button type="button" class="btn btn-outline-danger btn-lg btn-block">Disable student</button>
+                <button type="button" class="btn btn-outline-primary btn-lg btn-block">Enable student</button>
+                <button type="button" class="btn btn-outline-primary btn-lg btn-block">Edit student reg number</button>
+            </div>
+        </div>
+
+        <div class="col-xl-8">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                        </li>
+                        {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice_principal' or user.profile.role.keyword == 'admin' %}
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content pt-2">
+
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                            <h5 class="card-title">Profile Details</h5>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                <div class="col-lg-9 col-md-8">{{student.last_name}} {{student.first_name}} {{student.other_name}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Registration Number</div>
+                                <div class="col-lg-9 col-md-8">{{student.registration_number}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Date of Birth</div>
+                                <div class="col-lg-9 col-md-8">{{student.dob}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">School</div>
+                                <div class="col-lg-9 col-md-8">Green Pack Academy</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Role</div>
+                                <div class="col-lg-9 col-md-8">Student</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Address</div>
+                                <div class="col-lg-9 col-md-8">{{ student.address }}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Phone</div>
+                                <div class="col-lg-9 col-md-8">{{ student.mobile }}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Email</div>
+                                <div class="col-lg-9 col-md-8">{{ student.email }}</div>
+                            </div>
+
+                        </div>
+
+                        {% if user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice_principal' or user.profile.role.keyword == 'admin' %}
+                        <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                            <!-- Profile Edit Form -->
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row mb-3">
+                                    <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <img src="{{student.passport.url}}" alt="Profile">
+                                        <div class="pt-2">
+                                            <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                                            <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="lastName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="last_name1" type="text" class="form-control" id="lastName" value="{{student.last_name}}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="firstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="first_name1" type="text" class="form-control" id="fisrtName" value="{{student.first_name}}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="otherName" class="col-md-4 col-lg-3 col-form-label">Other Name(s)</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="other_name1" type="text" class="form-control" id="otherName" value="{{student.other_name}}">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <select name="gender" id="" class="form-control" required>
+                                            <option value="">--Select--</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="address1" type="text" class="form-control" id="Address" value="{{ student.address }}">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="phone1" type="text" class="form-control" id="Phone" value="{{ student.mobile }}">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="email1" type="email" class="form-control" id="Email" value="{{ student.email }}">
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button name="submit1" type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form><!-- End Profile Edit Form -->
+
+                        </div>
+                        {% endif %}
+                        
+                        <div class="tab-pane fade pt-3" id="profile-change-password">
+                        <!-- Change Password Form -->
+                            <form>
+
+                                <div class="row mb-3">
+                                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="password" type="password" class="form-control" id="currentPassword">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="newpassword" type="password" class="form-control" id="newPassword">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit2" class="btn btn-primary">Change Password</button>
+                                </div>
+                            </form><!-- End Change Password Form -->
+
+                        </div>
+
+                    </div><!-- End Bordered Tabs -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,500 @@
+{% extends 'lms/main.html' %}
+{% load static %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section dashboard">
+    <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+            <div class="row">
+
+                {% if user.profile.role.keyword == 'class-teacher' %}
+
+                <div class="col-xl-12 col-lg-12">
+
+                    <div class="card info-card customers-card">
+                        <div class="card-body">
+                            <h6 class="card-title text-center">{{user.first_name}}{{user.last_name}} CLASS INFORMATION</h6>
+                            <hr>
+
+                            <div class="d-flex align-items-center my-2">
+                                <div class="ps-3">
+                                    <h5>CA Maximum score</h5>
+                                    <span class="text-danger pt-1 fw-bold">{{class_info.CA_max}}</span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center my-2">
+                                <div class="ps-3">
+                                    <h5>Exam Maximum score</h5>
+                                    <span class="text-danger pt-1 fw-bold">{{class_info.exam_max}}</span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center my-2">
+                                <div class="ps-3">
+                                    <h5>Number of subjects</h5>
+                                    <span class="text-danger pt-1 fw-bold">{{class_info.number_of_subjects}}</span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center my-2">
+                                <div class="ps-3">
+                                    <h5>Number of students</h5>
+                                    <span class="text-danger pt-1 fw-bold">{{class_info.number_of_student}}</span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center my-2">
+                                <div class="ps-3">
+                                    <h5>Teacher in charge</h5>
+                                    <span class="text-danger pt-1 fw-bold">{{class_info.owner}}</span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center my-2">
+                                <div class="ps-3">
+                                    <a href="{% url 'class_academics' %}" role="button" class="btn btn-secondary">Manage class</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                {% if class_teacher %}
+                <p class="text-danger"><i>No student</i></p>
+                {% else %}
+                <div class="col-12">
+                    <div class="card top-selling overflow-auto">
+
+                        <div class="card-body pb-0">
+                            <h5 class="card-title">{{user.first_name}}{{user.last_name}} class list</h5>
+
+                            <table class="table table-borderless ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">SN</th>
+                                        <th scope="col">Passport</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Reg Number</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in class_student %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td><img src="{{i.passport.url}}" class="circle-rounded img-fluid" alt="{{i.last_name}}" width="150" height="150"></td>
+                                        <td class="fw-bold">{{i.last_name}}</td>
+                                        <td>{{i.first_name}}</td>
+                                        <td>{{i.registration_number}}</td>
+                                        {% if i.active == 1 %}
+                                        <td class="text-success">Active</td>
+                                        {% else %}
+                                        <td class="text-danger">In-active</td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="col-12">
+                    <div class="card top-selling overflow-auto">
+
+                        <div class="card-body pb-0">
+                            <h5 class="card-title">{{user.first_name}}{{user.last_name}} class payment list(current term)</h5>
+                            {% if not class_payment %}
+                            <p class="text-center text-danger"><i>No student in this class has made payment</i></p>
+                            {% else %}
+                            <table class="table table-borderless ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">SN</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Reg Number</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pay in class_payment %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td class="fw-bold">{{pay.added_by.last_name}}</td>
+                                        <td>{{pay.added_by.first_name}}</td>
+                                        <td>{{pay.student}}</td>
+                                        {% if pay.status == 1 and pay.complete == 1 %}
+                                        <td class="text-success">Paid</td>
+                                        {% else %}
+                                        <td class="text-danger">In-active</td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+
+                {% endif %}
+
+                
+
+                <!-- Application details -->
+                {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'bursar'   %}
+
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card sales-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Active applicant <span>| Session</span></h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-plus"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{applicant}}</h6>
+                                    <!-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card revenue-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Application Revenue <span>| Session</span></h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <span>&#8358;</span>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{ application_payment }}</h6>
+                                    <!-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- End application detail -->
+
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card sales-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Active student <span>| Semester</span></h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{student}}</h6>
+                                    <!-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- End Sales Card -->
+                {% endif %}
+
+                {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'bursar'   %}
+                <!-- Revenue Card -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card revenue-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Revenue <span>| Current Semester</span></h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <span>&#8358;</span>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{ payment }}</h6>
+                                    <!-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- End Revenue Card -->
+                {% endif %}
+
+                {% if user.profile.role.keyword == 'admin' or user.profile.role.keyword == 'principal' or user.profile.role.keyword == 'vice-principal' or user.profile.role.keyword == 'bursar'   %}
+                <div class="col-xxl-4 col-xl-12">
+
+                    <div class="card info-card customers-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">All Students <span>| Current Session</span></h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{allstudent}}</h6>
+                                    <!-- <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> -->
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Attendance start -->
+                <div class="col-xxl-4 col-xl-12">
+
+                    <div class="card info-card revenue-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Present Students <span>| Today</span></h5>
+
+                            <div class="d-flex align-items-center my-1">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-file-earmark-plus-fill"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{present}}/<span class="text-success">{{student}}</span></h6>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xxl-4 col-xl-12">
+
+                    <div class="card info-card revenue-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Absent Students <span>| Today</span></h5>
+
+                            <div class="d-flex align-items-center my-1">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-file-earmark-minus-fill"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6><span class="text-danger">{{absent}}</span>/<span class="text-success">{{student}}</span></h6>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card sales-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Paid Students <span>| Semester</span></h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-plus"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{payment_len}}/{{student}}</h6>
+                                    <!-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card sales-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Active Staffs</h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{staff}}</h6>
+                                    <!-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="col-12">
+                    <div class="card recent-sales overflow-auto">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Result Status <span>| Semester</span></h5>
+
+                            <table class="table table-borderless datatable">
+                                <thead>
+                                <tr>
+                                    <th scope="col">SN</th>
+                                    <th scope="col">Class</th>
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% for subject in subject %}
+                                    <tr>
+                                        <th scope="row"><a href="#">{{ forloop.counter }}</a></th>
+                                        <td>{{subject.group}}{{subject.arm}}</td>
+                                        <td><a href="#" class="text-primary">{{ subject.subject }}</a></td>
+                                        <td><span class="badge bg-success">Approved</span></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div><!-- End Recent Sales -->
+
+                <!-- Top Selling -->
+                <div class="col-12">
+                    <div class="card top-selling overflow-auto">
+
+                        <div class="card-body pb-0">
+                            <h5 class="card-title">Best Students <span>| Semester</span></h5>
+
+                            <table class="table table-borderless datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">SN</th>
+                                        <th scope="col">Student</th>
+                                        <th scope="col">Class</th>
+                                        <th scope="col">Term</th>
+                                        <th scope="col">Position</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in result|dictsortreversed:"total" %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td><a href="{% url 'manage_student' result.student %}" class="text-primary fw-bold">{{result.student}}</a></td>
+                                        <td class="fw-bold">{{result.group}}{{result.arm}}</td>
+                                        {% if result.term == 1 %}
+                                        <td>First</td>
+                                        {% elif result.term == 2 %}
+                                        <td>Second</td>
+                                        {% elif result.term == 3 %}
+                                        <td>Third</td>
+                                        {% elif result.term == 4 %}
+                                        <td>Anual</td>
+                                        {% endif %}
+                                        <td>{{result.position}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div><!-- End Top Selling -->
+
+            </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-4">
+            <!-- News & Updates Traffic -->
+            <div class="card">
+                <!-- <div class="filter">
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <li class="dropdown-header text-start">
+                        <h6>Filter</h6>
+                        </li>
+
+                        <li><a class="dropdown-item" href="#">Today</a></li>
+                        <li><a class="dropdown-item" href="#">This Month</a></li>
+                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                    </ul>
+                </div> -->
+
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Today Birthday</h5>
+                    {% if student_dob or staff_dob %}
+                    <div class="news">
+                        {% if student_dob %}
+                        <div class="fw-bold text-center">STUDENT BIRTDAY</div>
+                        {% for s in student_dob %}
+                        <div class="post-item clearfix">
+                            <img src="{{s.passport.url}}" alt="">
+                            <h4>{{s.group}} {{s.arm}}</h4>
+                            <p>{{s.last_name}} {{s.first_name}}</p>
+                            <p>{{s.birth_day}}/{{s.birth_month}}</p>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if staff_dob %}
+                        <div class="fw-bold text-center">STAFF BIRTHDAY</div>
+                        {% for s in staff_dob %}
+                        <div class="post-item clearfix">
+                            <img src="{{s.passport.url}}" alt="">
+                            <p>{{s.last_name}} {{s.first_name}}</p>
+                            <p>{{s.birth_day}}/{{s.birt_month}}</p>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <p class="text-danger text-center"><i>No birthday today</i></p>
+                    {% endif %}
+                </div>
+            </div><!-- End News & Updates -->
+
+        </div><!-- End Right side columns -->
+
+    </div>
+</section>
+{% endblock content %}

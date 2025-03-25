@@ -1,0 +1,90 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>COURSE REGISTRATION</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item">register course</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<section class="section register d-flex flex-column justify-content-center mb-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12 d-flex flex-column justify-content-center">
+
+            <!-- <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+                </a>
+            </div> -->
+          <!-- End Logo -->
+            <div class="border-bottom mb-4">
+                <h5 class="card-title text-center pb-0 fs-4">REGISTER STUDENT COURSE</h5>
+            </div>
+            {% if not student.register_course %}
+            <div class="row">
+                <div class="col-lg-5 mx-4 border-right">
+                    <p class="font-weight-bold text-center text-danger"><i>Maximum subjects of 10</i></p>
+                    {% for course in courses %}
+                        <div class="d-flex justify-content-between mx-1">
+                            <!-- <input type="checkbox" name="sub1" id="sub1"> -->
+                            <label for="sub1">{{course.subject}}</label>
+                            <a href="{% url 'admin-add-course' course.ref student.ref %}" class="btn btn-danger">ADD</a>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                </div>
+                <div class="col-lg-5 mx-4 border-right">
+                    {% if registered %}
+                    <p class="font-weight-bold text-center text-danger"><i>Maximum subjects of 10</i></p>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% for r in registered %}
+                        <div class="d-flex justify-content-between">
+                            <!-- <input type="checkbox" name="sub1" id="sub1"> -->
+                            <label for="sub1">{{r.subject}}</label>
+                            {% if not r.lock %}
+                            <a href="{% url 'admin-remove-course' r.ref %}" class="btn btn-danger">REMOVE</a>
+                            {% endif %}
+                        </div>
+                        <hr>
+                        {% endfor %}
+                        {% else %}
+                        <p class="font-weight-bold text-center text-danger"><i>No registered subject yet</i></p>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-dark btn-block">SUBMIT REGISTRATION</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <div class="row">
+                <div class="card col-sm-12 justify-content-center">
+                    <div class="card-header text-center">
+                        REGISTERED COURSES
+                    </div>
+                    <div>
+                        <table class="table">
+                            <tr>
+                                <th>S/N</th>
+                                <th>SUBJECTS</th>
+                            </tr>
+                            {% for course in registered %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{course.subject}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Class</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">class</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div>
+    <h3 class="text-center">Manage Class</h3>
+    <div>
+        <table class="table">
+            <tr>
+                <td><a href="{% url 'viewall' %}">Create class</a></td>
+            </tr>
+            <tr>
+                <td><a href="{% url 'class' %}">Manage class</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock content %}

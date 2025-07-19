@@ -116,7 +116,7 @@ WSGI_APPLICATION = 'school.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'demo',
+        'NAME': 'noceuivk_db',
         'HOST': 'localhost',
         'USER': 'root',
         'PASSWORD': '',

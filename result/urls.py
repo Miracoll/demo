@@ -20,4 +20,6 @@ urlpatterns = [
     path('approve/class/result/',views.approveclassresult, name='approve_class_result'),
     path('approve/<str:pk>/', views.approveresultclick, name='approve'),
     path('take-subject', views.allocateSubject, name='allocate'),
+    path('print-class-result', views.print_class_result, name='print_class_result'),
+    path('download-pdf/', views.download_class_result_pdf, name='download_class_result_pdf'),
 ]

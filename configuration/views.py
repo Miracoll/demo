@@ -52,7 +52,7 @@ def configerror(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin','principal','vice-principal','controller'])
 def term(request):
-    term = Term.objects.all()
+    term = Term.objects.exclude(term='4')
     if not term.exists():
         for i in range(1,4):
             print(i)

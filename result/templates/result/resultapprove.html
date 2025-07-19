@@ -19,6 +19,7 @@
                             <th>S/N</th>
                             <th>Subject</th>
                             <th>Class</th>
+                            <th>Teacher</th>
                             <th>Uploaded</th>
                             <th>Action</th>
                         </tr>
@@ -28,6 +29,7 @@
                             <td>{{forloop.counter}}</td>
                             <td>{{ unitsubject.subject }}</td>
                             <td>{{unitsubject.group}}{{unitsubject.arm}}</td>
+                            <td>{{unitsubject.teacher}}</td>
                             <td>{{unitsubject.upload}} uploaded out of {{unitsubject.total_student}}</td>
                             {% if unitsubject.approve_result == 0 %}
                             <td>

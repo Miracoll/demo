@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.db.models import Sum
+from django.db import transaction
 import csv
 from operator import itemgetter
 from io import StringIO
@@ -11,6 +12,7 @@ from result.models import Result
 from attendance.models import Attendance
 from .models import Record
 
+@transaction.atomic
 def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,check_summer):
     teacher = Subject.objects.get(group=uugroup,arm=uuarm,subject=uusub).teacher
     getlock = Subject.objects.get(teacher=teacher,group=uugroup,arm=uuarm,subject=uusub).lock
@@ -238,7 +240,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
             anualstudentresult = []
             if term == 3:
                 getallstudent = RegisteredSubjects.objects.filter(group=uugroup,subject=uusub,arm=uuarm,active=1,lock=1)
-                liststudent = getallstudent.values_list('registration_number','group','arm')
+                liststudent = getallstudent.values_list('student','group','arm')
                 alltermtotal = 0
                 indexpos = ''
                 for student in liststudent:
@@ -246,7 +248,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Total score for 1st term
                     try:
                         resulttotal1 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=1
+                            student=student[0],group=student[1],arm=student[2],term=1,session=session
                         ).total
                         if resulttotal1 == None:
                             resulttotal1 = 0
@@ -256,7 +258,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Total score for 2nd term
                     try:
                         resulttotal2 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=2
+                            student=student[0],group=student[1],arm=student[2],term=2,session=session
                         ).total
                         if resulttotal2 == None:
                             resulttotal2 = 0
@@ -266,7 +268,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Total score for 3rd term
                     try:
                         resulttotal3 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=3
+                            student=student[0],group=student[1],arm=student[2],term=3,session=session
                         ).total
                         if resulttotal3 == None:
                             resulttotal3 = 0
@@ -276,7 +278,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Average score for 1st term
                     try:
                         avgresultscore1 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=1
+                            student=student[0],group=student[1],arm=student[2],term=1,session=session
                         ).average
                         if avgresultscore1 == None:
                             avgresultscore1 = 0
@@ -286,7 +288,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Average score for 2nd term
                     try:
                         avgresultscore2 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=2
+                            student=student[0],group=student[1],arm=student[2],term=2,session=session
                         ).average
                         if avgresultscore2 == None:
                             avgresultscore2 = 0
@@ -296,7 +298,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Average score for 3rd term
                     try:
                         avgresultscore3 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=3
+                            student=student[0],group=student[1],arm=student[2],term=3,session=session
                         ).average
                         if avgresultscore3 == None:
                             avgresultscore3 = 0
@@ -306,7 +308,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Present attendance counter for 1st term
                     try:
                         getpresent1 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=1
+                            student=student[0],group=student[1],arm=student[2],term=1,session=session
                         ).present
                         if getpresent1 == None:
                             getpresent1 = 0
@@ -316,7 +318,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Present attendance counter for 2nd term
                     try:
                         getpresent2 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=2
+                            student=student[0],group=student[1],arm=student[2],term=2,session=session
                         ).present
                         if getpresent2 == None:
                             getpresent2 = 0
@@ -326,7 +328,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Present attendance counter for 3rd term
                     try:
                         getpresent3 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=3
+                            student=student[0],group=student[1],arm=student[2],term=3,session=session
                         ).present
                         if getpresent3 == None:
                             getpresent3 = 0
@@ -336,7 +338,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Absent attendance counter for 1st term
                     try:
                         getabsent1 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=1
+                            student=student[0],group=student[1],arm=student[2],term=1,session=session
                         ).absent
                         if getabsent1 == None:
                             getabsent1 = 0
@@ -346,7 +348,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Absent attendance counter for 2nd term
                     try:
                         getabsent2 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=2
+                            student=student[0],group=student[1],arm=student[2],term=2,session=session
                         ).absent
                         if getabsent2 == None:
                             getabsent2 = 0
@@ -356,7 +358,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     # Absent attendance counter for 3rd term
                     try:
                         getabsent3 = Result.objects.get(
-                            student=student[0],group=student[1],arm=student[2],term=3
+                            student=student[0],group=student[1],arm=student[2],term=3,session=session
                         ).absent
                         if getabsent3 == None:
                             getabsent3 = 0
@@ -442,7 +444,7 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
     anualrecord = []
     if term == 3:
         getallstudent = RegisteredSubjects.objects.filter(group=uugroup,subject=uusub,arm=uuarm,active=1)
-        liststudent = getallstudent.values_list('registration_number','group','arm')
+        liststudent = getallstudent.values_list('student','group','arm')
         avggrade = ''
         avgremark = ''
         annual_totalindex = 0
@@ -514,6 +516,9 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
                     ca31 = 0
             except Record.DoesNotExist:
                 ca31=0
+            except Record.MultipleObjectsReturned:
+                print('Woman')
+                print(stud[0],stud[1],stud[2],session,uusub)
 
             try:
                 ca32 = Record.objects.get(

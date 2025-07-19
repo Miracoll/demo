@@ -20,6 +20,14 @@
             <form action="" class="row g-3 needs-validation" novalidate method="POST">
                 {% csrf_token %}
                 <div class="col-12">
+                    <select name="session" class="form-select" aria-label="Default select example" required>
+                        <option value="" selected disabled>--Select session--</option>
+                        {% for s in session %}
+                        <option value="{{s.ref}}">{{s.session}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
                     <select name="ref" class="form-select" aria-label="Default select example" required>
                         <option value="" selected disabled>--Select class--</option>
                         {% for g in group %}
@@ -31,24 +39,6 @@
                     <button name="submit1" class="btn btn-primary w-100" type="submit">DOWNLOAD</button>
                 </div>
             </form>
-            <!-- <div>
-                <h5 class="card-title text-center pb-0 fs-4">Upload subject result file</h5>
-            </div>
-            <form action="" class="row g-3 needs-validation" novalidate method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{form}}
-                <div class="col-lg-12 col-md-12">
-                    <select name="usub" class="form-select" aria-label="Default select example" required>
-                        <option value="">--Select subject--</option>
-                        {% for subject in subject %}
-                        <option value="{{subject.subject}}, {{subject.group}}, {{subject.arm}}">{{subject.subject}} ({{subject.group}}{{subject.arm}})</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-12">
-                    <button name="csvupload" class="btn btn-primary w-100" type="submit">Upload class result</button>
-                </div>
-            </form> -->
         </div>
       </div>
     </div>
@@ -64,6 +54,14 @@
             </div>
             <form action="" class="row g-3 needs-validation" novalidate method="POST">
                 {% csrf_token %}
+                <div class="col-12">
+                    <select name="session" class="form-select" aria-label="Default select example" required>
+                        <option value="" selected disabled>--Select session--</option>
+                        {% for s in session %}
+                        <option value="{{s.ref}}">{{s.session}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="col-12">
                     <select name="group" class="form-select" aria-label="Default select example" required>
                         <option value="{{group.ref}}" selected disabled>{{group.group}}{{group.arm}}</option>

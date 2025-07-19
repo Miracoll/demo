@@ -1,0 +1,394 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Result Sheet</title>
+    <link rel="shortcut icon" href="{{ student.passport.url }}" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            width: 21cm;
+            height: 29.7cm;
+            padding: 1.5cm 1cm 1cm;
+            box-sizing: border-box;
+            page-break-after: always;
+            position: relative;
+        }
+
+        @media print {
+
+            body,
+            page {
+                margin: 0;
+                box-shadow: none;
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .d-print-none {
+                display: none !important;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 4px 6px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        th {
+            background-color: #f1f1f1;
+        }
+
+        .header-logo {
+            width: 90px;
+            height: auto;
+        }
+
+        .passport {
+            width: 100px;
+            height: auto;
+            border: 2px solid #ddd;
+        }
+
+        .title-block {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .title-block h2 {
+            font-size: 1.3rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .title-block p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .info-label {
+            font-weight: 600;
+        }
+
+        .metadata-section p {
+            font-size: 0.85rem;
+        }
+
+        .category-tables {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .category-tables table {
+            flex: 1;
+            font-size: 0.8rem;
+        }
+
+        .comments-section table {
+            font-size: 0.85rem;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #555;
+        }
+
+        .qrcode {
+            width: 70px;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70%;
+            opacity: 0.08;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .print-btn-container {
+            position: fixed;
+            top: 10px;
+            text-align: center;
+            width: 100%;
+            left: 0;
+            z-index: 9999;
+            /* background: rgba(255, 255, 255, 0.95);
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="print-btn-container d-print-none">
+        <button class="btn btn-primary" onclick="window.print()">PRINT RESULT</button>
+    </div>
+
+
+    {% for student in students %}
+    <page size="A4">
+        <img src="{% static 'frontpage/images/wido.png' %}" alt="Watermark" class="watermark">
+
+        <!-- Header -->
+        <div class="d-flex align-items-center mb-2" style="background-color: #191970; color: whitesmoke;">
+            <img src="{% static 'frontpage/images/wido.png' %}" class="header-logo me-3">
+            <div class="flex-grow-1 title-block">
+                <h2>{{ config.school_name }}</h2>
+                <p>{{ config.school_address }}</p>
+                <p class="fw-bold">
+                    {% if student.term == 4 %} STUDENT ANNUAL RESULT SHEET
+                    {% else %} STUDENT TERM RESULT SHEET
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <!-- Student Info -->
+        <div class="d-flex justify-content-between metadata-section border-bottom pb-2 mb-2">
+            <img src="{{ student.passport }}" class="passport me-3">
+            <div class="w-100">
+                <div class="d-flex justify-content-between">
+                    <p><span class="info-label">Name:</span> {{ student.name }}</p>
+                    <p><span class="info-label">Gender:</span> {{ student.gender }}</p>
+                    <p><span class="info-label">DOB:</span> {{ student.dob }}</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p><span class="info-label">Reg No:</span> {{ student.reg_no }}</p>
+                    <p><span class="info-label">Session:</span> {{ student.session }}</p>
+                    <p><span class="info-label">Term:</span>
+                        {% if student.term == 1 %} First
+                        {% elif student.term == 2 %} Second
+                        {% elif student.term == 3 %} Third
+                        {% endif %}
+                    </p>
+                    <p><span class="info-label">Attendance:</span> {{ student.present }}/{{ student.attendance }}</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p><span class="info-label">Position:</span> {{ student.position }}/{{ student.total_student }}</p>
+                    <p><span class="info-label">Total:</span> {{ student.total|floatformat:1 }}</p>
+                    <p><span class="info-label">Average:</span> {{ student.average }}</p>
+                    <p><span class="info-label">Class:</span> {{ student.class }}</p>
+                    <p><span class="info-label">Remark:</span> {{ student.remark }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subjects -->
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2">S/N</th>
+                    <th rowspan="2">Subject</th>
+                    <th colspan="3">Score</th>
+                    <th rowspan="2">Total</th>
+                    <th rowspan="2">Class Avg</th>
+                    <th rowspan="2">Position</th>
+                    <th rowspan="2">Grade</th>
+                    <th rowspan="2">Remark</th>
+                </tr>
+                <tr>
+                    {% if student.term == 4 %}
+                    <th>1st</th>
+                    <th>2nd</th>
+                    <th>3rd</th>
+                    {% else %}
+                    <th>1st CA</th>
+                    <th>2nd CA</th>
+                    <th>Exam</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in student.subjects %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ record.subject }}</td>
+                    <td>{{ record.CA1 }}</td>
+                    <td>{{ record.CA2 }}</td>
+                    <td>{{ record.exam }}</td>
+                    <td>{{ record.total }}</td>
+                    <td>{{ record.average }}</td>
+                    <td>{{ record.position }}/{{ student.total_student }}</td>
+                    <td>{{ record.grade }}</td>
+                    <td>{{ record.remark }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p class="text-center mt-1 small">KEY TO GRADES: A = 70%+, C = 55-69%, P = 40-54%, F = Below 40%</p>
+
+        <!-- Character & Skills -->
+        <div class="category-tables">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Character Development</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Attentiveness</td>
+                        <td>{{ student.attentiveness }}</td>
+                    </tr>
+                    <tr>
+                        <td>Politeness</td>
+                        <td>{{ student.politeness }}</td>
+                    </tr>
+                    <tr>
+                        <td>Neatness</td>
+                        <td>{{ student.neatness }}</td>
+                    </tr>
+                    <tr>
+                        <td>Moral Concepts</td>
+                        <td>{{ student.moral_concepts }}</td>
+                    </tr>
+                    <tr>
+                        <td>Punctuality</td>
+                        <td>{{ student.punctuality }}</td>
+                    </tr>
+                    <tr>
+                        <td>Social Attitudes</td>
+                        <td>{{ student.social_attitudes }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Rating Key</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>5</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Good</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Fair</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Poor</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Very Poor</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Psychomotor Skills</th>
+                        <th>Scale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Hand Writing</td>
+                        <td>{{ student.hand_writing }}</td>
+                    </tr>
+                    <tr>
+                        <td>Speech Fluency</td>
+                        <td>{{ student.speech_fluency }}</td>
+                    </tr>
+                    <tr>
+                        <td>Lab & Workshop</td>
+                        <td>{{ student.lab }}</td>
+                    </tr>
+                    <tr>
+                        <td>Sports & Games</td>
+                        <td>{{ student.sport }}</td>
+                    </tr>
+                    <tr>
+                        <td>Communication</td>
+                        <td>{{ student.communication }}</td>
+                    </tr>
+                    <tr>
+                        <td>Critical Thinking</td>
+                        <td>{{ student.thinking }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Comments -->
+        <div class="comments-section mt-2">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Class Teacher</td>
+                        <td>{{ student.teachercomment }}</td>
+                    </tr>
+                    <tr>
+                        <td>Principal</td>
+                        <td>{{ student.principalcomment }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- QR Code -->
+        <div class="text-end mt-2">
+            {% if student.qrcode %}
+            <img src="{{ student.qrcode }}" alt="QR Code" class="qrcode">
+            {% endif %}
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            &copy;
+            <script>document.write(new Date().getFullYear());</script> Generated by SYSTEMCOG School Portal v2.0
+        </div>
+    </page>
+    {% endfor %}
+
+</body>
+
+</html>

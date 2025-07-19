@@ -1,0 +1,92 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.manifest
+*.spec
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+static/
+local_settings.py
+.env
+.env.*
+
+# Ignore settings.py
+**/settings.py
+**/settings/*.py
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+pip-wheel-metadata/
+pip-log.txt
+
+# Migrations - optional
+*/migrations/
+!*/migrations/__init__.py
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pytest
+.pytest_cache/
+
+# Test logs
+.tox/
+test-results/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Gunicorn
+gunicorn.pid
+
+# Security
+secrets.json
+
+# Docker
+*.pid
+*.seed
+*.bak
+*.swp
+docker-compose.override.yml

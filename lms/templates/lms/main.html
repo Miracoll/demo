@@ -450,6 +450,11 @@
               <i class="bi bi-circle"></i><span>Print broadsheet</span>
             </a>
           </li>
+          <li>
+            <a href="{% url 'print_class_result' %}">
+              <i class="bi bi-circle"></i><span>Print result</span>
+            </a>
+          </li>
           {% endif %}
           {% if user.profile.role.keyword == 'class-teacher'%}
           <li>

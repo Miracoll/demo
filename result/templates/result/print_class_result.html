@@ -1,0 +1,119 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Print Class Result</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item">get class result</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+{% if user.profile.role.keyword == 'controller' or user.profile.role.keyword == 'admin' %}
+<section class="section register d-flex flex-column justify-content-center mb-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12 col-lg-6 d-flex flex-column justify-content-center">
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">SELECT OPTIONS</h5>
+            </div>
+            <form class="row g-3 needs-validation" novalidate method="POST" action="{% url 'download_class_result_pdf' %}">
+                {% csrf_token %}
+                <div class="col-12">
+                    <select name="session" class="form-select" aria-label="Default select example" required>
+                        {% for s in sessions %}
+                        <option value="{{s.ref}}" {% if s.active %}selected{% endif %}>
+                            {{s.session}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <select name="class" class="form-select" aria-label="Default select example" required>
+                        <option value="" selected disabled>--Select class--</option>
+                        {% for g in group %}
+                        <option value="{{g.ref}}">{{g.group}}{{g.arm}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <select name="term" class="form-select" aria-label="Default select example" required>
+                        {% for t in terms %}
+                        <option value="{{ t.ref }}" {% if t.active %}selected{% endif %}>
+                            {% if t.term == 1 %}
+                                First
+                            {% elif t.term == 2 %}
+                                Second
+                            {% elif t.term == 3 %}
+                                Third
+                            {% elif t.term == 4 %}
+                                Annual
+                            {% else %}
+                                {{ t.term }}
+                            {% endif %}
+                        </option>
+                        {% endfor %}
+                    </select>                    
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary w-100" type="submit">DOWNLOAD</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endif %}
+{% if user.profile.role.keyword == 'class-teacher'%}
+<section class="section register d-flex flex-column justify-content-center mb-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12 col-lg-6 d-flex flex-column justify-content-center">
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">DOWNLOAD CLASS RESULT</h5>
+            </div>
+            <form action="{% url 'download_class_result_pdf' %}" class="row g-3 needs-validation" novalidate method="POST">
+                {% csrf_token %}
+                <div class="col-12">
+                    <select name="session" class="form-select" aria-label="Default select example" required>
+                        {% for s in sessions %}
+                        <option value="{{s.ref}}" {% if s.active %}selected{% endif %}>
+                            {{s.session}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <select name="class" class="form-select" aria-label="Default select example" required>
+                        <option value="{{group.ref}}" selected>{{group.group}}{{group.arm}}</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <select name="term" class="form-select" aria-label="Default select example" required>
+                        {% for t in terms %}
+                        <option value="{{ t.ref }}" {% if t.active %}selected{% endif %}>
+                            {% if t.term == 1 %}
+                                First
+                            {% elif t.term == 2 %}
+                                Second
+                            {% elif t.term == 3 %}
+                                Third
+                            {% elif t.term == 4 %}
+                                Annual
+                            {% else %}
+                                {{ t.term }}
+                            {% endif %}
+                        </option>
+                        {% endfor %}
+                    </select>                    
+                </div>
+                <div class="col-12">
+                    <button name="submit1" class="btn btn-primary w-100" type="submit">DOWNLOAD</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endif %}
+{% endblock content %}

@@ -25,8 +25,7 @@ def gradeGetter(reg):
     grade = [a,c,p,f]
     return grade
 
-def stat(group):
-    session = Session.objects.get(active=1)
+def stat(group, session):
     record = len(Result.objects.filter(group=group.group,arm=group.arm,session=session.session,term=4))
     passed_number = len(Result.objects.filter(term=4,group=group.group,arm=group.arm,average__gte=40,session=session.session))
     failed_number = len(Result.objects.filter(term=4,group=group.group,arm=group.arm,average__lt=40,session=session.session))

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from lms.decorators import allowed_users
 from lms.models import Profile
 from configuration.models import AllClass, Subject, Config, Term, Session,RegisteredSubjects,AllSubject, Class,Arm
+from result.utils import render_to_pdf
 from student.models import Student
 from academic.models import Record
 from result.models import Result
@@ -284,8 +285,14 @@ def resultDatasheet(request):
 @allowed_users(allowed_roles=['admin','subject-teacher','class-teacher','controller'])
 def broadsheet(request):
     all_class = AllClass.objects.all()
+    # print(request.user.profile.role.keyword, request.user.first_name, request.user.last_name)
+    if (request.user.profile.role.keyword == 'class-teacher'):
+        all_class = AllClass.objects.get(group=request.user.first_name, arm=request.user.last_name)
+    session = Session.objects.all()
     if request.method == 'POST':
         get_group = request.POST.get('ref')
+        get_session = request.POST.get('session')
+        ses = Session.objects.get(ref=get_session)
         user = request.user
         if user.profile.role.keyword == 'class-teacher':
             group = AllClass.objects.get(teacher = request.user)
@@ -303,7 +310,7 @@ def broadsheet(request):
         class_subjects = Subject.objects.filter(group=group.group,arm=group.arm).values_list('subject')
         header = ['S/N','Reg Number','Last Name','First Name','Sex']
         subject = []
-        class_stat = stat(group)
+        class_stat = stat(group, ses)
         for i in class_subjects:
             tuple_2_list = list(i)
             subject.append(tuple_2_list[0])
@@ -336,7 +343,7 @@ def broadsheet(request):
             student_personal_data = [str(counter),student.registration_number, student.last_name.upper(), student.first_name.upper(),student.sex.upper()[0]]
             for sub in range(len(subject)):
                 try:
-                    record = Record.objects.get(student=student.registration_number,term=4,subject=subject[sub])
+                    record = Record.objects.get(student=student.registration_number,term=4,subject=subject[sub],session=ses.session)
                     ca1 = record.CA1
                     ca2 = record.CA2
                     ca3 = record.CA3
@@ -351,7 +358,7 @@ def broadsheet(request):
                 record_collect = f'{ca1}|{ca2}|{ca3}|{total}|{average}'
                 student_personal_data.append(record_collect)
             try:
-                result = Result.objects.get(student=student.registration_number,term=4)
+                result = Result.objects.get(student=student.registration_number,term=4,session=ses.session)
                 r_total = result.total
                 r_average = result.average
                 r_position = result.position
@@ -434,7 +441,8 @@ def broadsheet(request):
 
         return response
     context = {
-        'group':all_class
+        'group':all_class,
+        'session': session
     }
     return render(request, 'result/broadsheet.html', context)
 
@@ -895,3 +903,148 @@ def allocateSubject(request):
         'all_subjects':all_subjects,
     }
     return render(request, 'result/allocate.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin','class-teacher','controller'])
+def print_class_result(request):
+    all_class = AllClass.objects.all()
+    if (request.user.profile.role.keyword == 'class-teacher'):
+        all_class = AllClass.objects.get(group=request.user.first_name, arm=request.user.last_name)
+    sessions = Session.objects.all()
+    terms = Term.objects.all()
+
+    # if request.method == 'POST':
+    #     selected_session = request.POST.get('session')
+    #     selected_term = request.POST.get('term')
+    #     selected_class = request.POST.get('class')
+
+    #     session = Session.objects.get(ref=selected_session)
+    #     term = Term.objects.get(ref=selected_term)
+    #     group = AllClass.objects.get(ref=selected_class)
+        
+    #     result = Result.objects.filter(
+    #         session=session.session,
+    #         term=term.term,
+    #         group=group.group,
+    #         arm=group.arm
+    #     )
+
+    context = {
+        'group': all_class,
+        'sessions': sessions,
+        'terms': terms,
+    }
+    return render(request, 'result/print_class_result.html', context)
+
+def download_class_result_pdf(request):
+    print('i am in')
+    if request.method == 'POST':
+        selected_session = request.POST.get('session')
+        selected_term = request.POST.get('term')
+        selected_class = request.POST.get('class')
+
+        config = Config.objects.first()
+
+        all_record = []
+
+        session = Session.objects.get(ref=selected_session)
+        term = Term.objects.get(ref=selected_term)
+        group = AllClass.objects.get(ref=selected_class)
+
+        # students = Student.objects.filter(group=group.group,arm=group.arm,active=1,graduated=False).order_by('last_name')
+        results = Result.objects.filter(
+            session=session.session,
+            term=term.term,
+            group=group.group,
+            arm=group.arm,
+        ).order_by('-average')
+
+        for result in results:
+            student = Student.objects.get(registration_number=result.student)
+            each_student_record = {}
+
+            # Personal record
+            each_student_record['name'] = f"{student.last_name.upper()} {student.first_name.upper()} {(student.other_name or '').upper()}"
+            each_student_record['gender'] = student.sex
+            each_student_record['dob'] = student.dob
+            each_student_record['passport'] = student.passport.url
+            each_student_record['reg_no'] = student.registration_number
+
+            # # Result record
+            # result = Result.objects.filter(
+            #     session=session.session,
+            #     term=term.term,
+            #     student=student.registration_number,
+            # ).first()
+            
+            each_student_record['session'] = result.session
+            each_student_record['term'] = result.term
+            each_student_record['present'] = result.present
+            each_student_record['absent'] = result.absent
+            each_student_record['position'] = result.position
+            each_student_record['total'] = result.total
+            each_student_record['average'] = result.average
+            each_student_record['class'] = f'{result.group}{result.arm}'
+            each_student_record['remark'] = result.remark
+            each_student_record['qrcode'] = result.qrcode.url if result.qrcode else None
+            each_student_record['total_student'] = len(results)
+            each_student_record['attendance'] = result.present+result.absent
+
+            each_student_record['attentiveness'] = result.attentiveness
+            each_student_record['politeness'] = result.politeness
+            each_student_record['moral_concepts'] = result.moral_concepts
+            each_student_record['punctuality'] = result.punctuality
+            each_student_record['social_attitudes'] = result.social_attitudes
+            each_student_record['neatness'] = result.neatness
+
+            each_student_record['hand_writing'] = result.hand_writing
+            each_student_record['speech_fluency'] = result.speech_fluency
+            each_student_record['lab'] = result.lab
+            each_student_record['sport'] = result.sport
+            each_student_record['communication'] = result.communication
+            each_student_record['thinking'] = result.thinking
+
+            each_student_record['teachercomment'] = result.teachercomment
+            each_student_record['principalcomment'] = result.principalcomment
+
+            # Academic subject record
+            records = Record.objects.filter(
+                student=student.registration_number,
+                session=session.session,
+                term=term.term,
+                active=1,
+            ).order_by('subject')
+            if records:
+                subjects = []
+                for record in records:
+                    subject = {}
+                    subject['subject'] = record.subject
+                    subject['CA1'] = record.CA1
+                    subject['CA2'] = record.CA2
+                    subject['CA3'] = record.CA3
+                    subject['exam'] = record.exam
+                    subject['total'] = record.total
+                    subject['average'] = record.average
+                    subject['position'] = record.position
+                    subject['grade'] = record.grade
+                    subject['remark'] = record.remark
+                    subject['total_subject'] = len(records)
+
+                    subjects.append(subject)
+                each_student_record['subjects'] = subjects
+            
+            all_record.append(each_student_record)
+
+        print('all record',all_record)
+            
+
+
+        context = {
+            'students': all_record,
+            'config': config,
+        }
+
+        # pdf = render_to_pdf('result/result_pdf_template.html', context)
+        # return pdf
+
+    return render(request, 'result/result_pdf_template.html', context)

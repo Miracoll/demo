@@ -25,6 +25,7 @@ local_settings.py
 # Ignore settings.py
 **/settings.py
 **/settings/*.py
+*/school/__init__.py
 
 # VS Code
 .vscode/

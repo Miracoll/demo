@@ -29,8 +29,14 @@ def stat(group, session):
     record = len(Result.objects.filter(group=group.group,arm=group.arm,session=session.session,term=4))
     passed_number = len(Result.objects.filter(term=4,group=group.group,arm=group.arm,average__gte=40,session=session.session))
     failed_number = len(Result.objects.filter(term=4,group=group.group,arm=group.arm,average__lt=40,session=session.session))
-    passed_percent = round((passed_number/record)*100,2)
-    failed_percent = round((failed_number/record)*100,2)
+    try:
+        passed_percent = round((passed_number/record)*100,2)
+    except ZeroDivisionError:
+        return None
+    try:
+        failed_percent = round((failed_number/record)*100,2)
+    except ZeroDivisionError:
+        return None
     avg = Result.objects.filter(group=group.group,arm=group.arm,session=session.session,term=4).aggregate(avg=Avg('average'))['avg']
 
     return [passed_number,passed_percent,failed_number,failed_percent,round(avg,2)]

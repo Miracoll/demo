@@ -311,6 +311,9 @@ def broadsheet(request):
         header = ['S/N','Reg Number','Last Name','First Name','Sex']
         subject = []
         class_stat = stat(group, ses)
+        if class_stat is None:
+            messages.error(request, 'No result to display')
+            return redirect('broadsheet')
         for i in class_subjects:
             tuple_2_list = list(i)
             subject.append(tuple_2_list[0])

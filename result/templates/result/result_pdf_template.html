@@ -238,7 +238,11 @@
                     <td>{{ record.subject }}</td>
                     <td>{{ record.CA1 }}</td>
                     <td>{{ record.CA2 }}</td>
+                    {% if student.term == 4 %}
+                    <td>{{ record.CA3 }}</td>
+                    {% else %}
                     <td>{{ record.exam }}</td>
+                    {% endif %}
                     <td>{{ record.total }}</td>
                     <td>{{ record.average }}</td>
                     <td>{{ record.position }}/{{ student.total_student }}</td>

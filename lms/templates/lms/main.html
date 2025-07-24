@@ -186,6 +186,14 @@
             </a>
           </li>
           {% endif %}
+          
+          {% if user.profile.role.keyword == 'admin'%}
+          <li>
+            <a href="{% url 'computation' %}">
+              <i class="bi bi-circle"></i><span>Compute Result</span>
+            </a>
+          </li>
+          {% endif %}
         </ul>
       </li>
       {% endif %}

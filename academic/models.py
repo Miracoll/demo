@@ -54,3 +54,14 @@ class Record_Deleted(models.Model):
     active = models.IntegerField(default=1, blank=True, null=True)
     added_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created = models.DateTimeField(default=timezone.now)
+
+class Grade(models.Model):
+    min_score = models.FloatField()
+    max_score = models.FloatField()
+    grade = models.CharField(max_length=5)
+    remark = models.CharField(max_length=20)
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.grade

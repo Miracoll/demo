@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.db.models import Sum
 from django.db import transaction
+from collections import defaultdict
+from django.db.models import QuerySet
 import csv
 from operator import itemgetter
 from io import StringIO
@@ -10,7 +12,7 @@ from configuration.models import Subject,Config,AllClass,RegisteredSubjects
 from student.models import Student
 from result.models import Result
 from attendance.models import Attendance
-from .models import Record
+from .models import Record, Grade
 
 @transaction.atomic
 def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,check_summer):
@@ -750,3 +752,111 @@ def calculate_result(request,uugroup,uuarm,uusub,csv_file,term,session,year,chec
         # Anual position calculation ends here
     messages.success(request, 'Added successful')
     return redirect('assessment')
+
+def get_grade_remark(score):
+    boundary = Grade.objects.filter(min_score__lte=score, max_score__gte=score).first()
+    if boundary:
+        return boundary.grade, boundary.remark
+    return 'N/A', 'Undefined'
+
+def get_promotion_remark(score,group,arm):
+    student_class = AllClass.objects.get(group=group,arm=arm)
+    if (score >= student_class.promotion_score):
+        return 'PROMOTED'
+    else:
+        return 'NOT PROMOTED'
+
+def ordinal(n: int) -> str:
+    """
+    Returns ordinal string of an integer (e.g., 1 -> '1st', 2 -> '2nd', 3 -> '3rd')
+    """
+    if 10 <= n % 100 <= 20:
+        suffix = 'th'
+    else:
+        suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
+    return f"{n}{suffix}"
+
+def assign_positions_to_subject_queryset(subject_result_queryset: QuerySet):
+    subject_result = list(subject_result_queryset.order_by('-total'))
+
+    position = 1
+    same_rank_count = 0
+    prev_score = None
+
+    for i, record in enumerate(subject_result):
+        current_score = record.total
+
+        if current_score == prev_score:
+            record.position = ordinal(position)
+            same_rank_count += 1
+        else:
+            position = i + 1
+            record.position = ordinal(position)
+            same_rank_count = 1
+            prev_score = current_score
+
+    # Bulk update only the 'position' field
+    with transaction.atomic():
+        subject_result_queryset.model.objects.bulk_update(subject_result, ['position'])
+
+def compute_result_totals_and_positions(request, group, arm, term, session):
+    """
+    Aggregates each student's total and average from the Record model,
+    saves them in the Result model, and assigns positions with ties handled.
+    """
+    # Step 1: Get all relevant records
+    records = Record.objects.filter(
+        group=group,
+        arm=arm,
+        term=term,
+        session=session
+    )
+
+    # Step 2: Group records by student
+    student_data = defaultdict(list)
+    for rec in records:
+        student_data[rec.student].append(rec.total or 0)
+
+    result_objects = []
+
+    # Step 3: Create/update Result records with totals and averages
+    for student, totals in student_data.items():
+        total_score = sum(totals)
+        average_score = round(total_score / len(totals), 2)
+
+        result, _ = Result.objects.get_or_create(
+            student=student,
+            group=group,
+            arm=arm,
+            term=term,
+            session=session,
+            defaults={'added_by': request.user},
+        )
+
+        result.total = total_score
+        result.average = average_score
+        result_objects.append(result)
+
+    # Step 4: Sort results by total for ranking
+    result_objects.sort(key=lambda x: x.average, reverse=True)
+
+
+    # Step 5: Assign ordinal positions (with ties handled)
+
+    position = 1
+    prev_score = None
+    same_rank_count = 0
+
+    for i, result in enumerate(result_objects):
+        if result.total == prev_score:
+            result.position = ordinal(position)
+            same_rank_count += 1
+        else:
+            position = i + 1
+            result.position = ordinal(position)
+            prev_score = result.total
+            same_rank_count = 1
+
+    # Step 6: Bulk update all Result entries
+    with transaction.atomic():
+        Result.objects.bulk_update(result_objects, ['total', 'average', 'position'])

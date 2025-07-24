@@ -7,4 +7,5 @@ urlpatterns = [
     path('eassessment/',views.eassessment, name='eassessment'),
     path('class/setup/',views.class_academics, name='class_academics'),
     path('activate-result/',views.computation_error, name='computation_error'),
+    path('computation/',views.computation, name='computation'),
 ]

@@ -915,23 +915,6 @@ def print_class_result(request):
         all_class = AllClass.objects.get(group=request.user.first_name, arm=request.user.last_name)
     sessions = Session.objects.all()
     terms = Term.objects.all()
-
-    # if request.method == 'POST':
-    #     selected_session = request.POST.get('session')
-    #     selected_term = request.POST.get('term')
-    #     selected_class = request.POST.get('class')
-
-    #     session = Session.objects.get(ref=selected_session)
-    #     term = Term.objects.get(ref=selected_term)
-    #     group = AllClass.objects.get(ref=selected_class)
-        
-    #     result = Result.objects.filter(
-    #         session=session.session,
-    #         term=term.term,
-    #         group=group.group,
-    #         arm=group.arm
-    #     )
-
     context = {
         'group': all_class,
         'sessions': sessions,
@@ -940,7 +923,7 @@ def print_class_result(request):
     return render(request, 'result/print_class_result.html', context)
 
 def download_class_result_pdf(request):
-    print('i am in')
+    print('innnnn')
     if request.method == 'POST':
         selected_session = request.POST.get('session')
         selected_term = request.POST.get('term')
@@ -991,7 +974,7 @@ def download_class_result_pdf(request):
             each_student_record['remark'] = result.remark
             each_student_record['qrcode'] = result.qrcode.url if result.qrcode else None
             each_student_record['total_student'] = len(results)
-            each_student_record['attendance'] = result.present+result.absent
+            each_student_record['attendance'] = (result.present or 0) + (result.absent or 0)
 
             each_student_record['attentiveness'] = result.attentiveness
             each_student_record['politeness'] = result.politeness
@@ -1011,6 +994,7 @@ def download_class_result_pdf(request):
             each_student_record['principalcomment'] = result.principalcomment
 
             # Academic subject record
+            print(student.registration_number,session.session,term.term)
             records = Record.objects.filter(
                 student=student.registration_number,
                 session=session.session,
@@ -1037,10 +1021,6 @@ def download_class_result_pdf(request):
                 each_student_record['subjects'] = subjects
             
             all_record.append(each_student_record)
-
-        print('all record',all_record)
-            
-
 
         context = {
             'students': all_record,

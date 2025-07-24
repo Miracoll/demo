@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from configuration.models import AllClass, AllSubject, Arm, Class, Session, Subject, Term, Config,RegisteredSubjects
 from academic.models import Record
+from result.models import Result
 from student.models import Student
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Sum
 from lms.decorators import allowed_users
 import csv
-from .functions import calculate_result
+from .functions import assign_positions_to_subject_queryset, calculate_result, compute_result_totals_and_positions, get_grade_remark
 
 # Create your views here.
 
@@ -116,13 +118,13 @@ def admin_assessment(request):
         else:
             for student in student:
                 stud = list(student)
-                if Record.objects.filter(student=stud[2],subject=sub,group=group,arm=arm,term=term).exists():
-                    cca1 = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term).CA1
-                    cca2 = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term).CA2
-                    # cca3 = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term).CA3
-                    # cproject = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term).project
-                    # ctest = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term).test
-                    cexam = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term).exam
+                if Record.objects.filter(student=stud[2],subject=sub,group=group,arm=arm,term=term,session=session).exists():
+                    cca1 = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term,session=session).CA1
+                    cca2 = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term,session=session).CA2
+                    # cca3 = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term,session=session).CA3
+                    # cproject = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term,session=session).project
+                    # ctest = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term,session=session).test
+                    cexam = Record.objects.get(student=stud[2],subject=sub,group=group,arm=arm,term=term,session=session).exam
                 stud.extend([cca1,cca2,cexam])
                 writer.writerow(stud)
             response['Content-Disposition'] = f'attachment; filename="{group}{arm} {sub} CA.csv"'
@@ -283,3 +285,81 @@ def class_academics(request):
         return redirect('class_academics')
     context = {'group':group}
     return render(request, 'academic/class_academics.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def computation(request):
+    subjects = Subject.objects.all().order_by('group','arm','subject')
+    terms = Term.objects.all()
+    sessions = Session.objects.all()
+    groups = AllClass.objects.all()
+
+    if "subject_result" in request.POST:
+        subject_input = request.POST.get('subject')
+        term_input = request.POST.get('term')
+        session_input = request.POST.get('session')
+
+        subject = Subject.objects.get(ref=subject_input)
+        term = Term.objects.get(ref=term_input)
+        session = Session.objects.get(ref=session_input)
+
+        subject_result = Record.objects.filter(
+            subject=subject.subject,
+            group=subject.group,
+            arm=subject.arm,term=term.term,
+            session=session.session,
+        )
+
+        total_score = subject_result.aggregate(total=Sum('total'))['total'] or 0
+        class_average = round((total_score/len(subject_result)),2) or 0
+
+        print('total', total_score)
+
+        # Calculate for subject total, average, grade and remark
+        for record in subject_result:
+            total = record.CA1+record.CA2+record.exam
+            print('kkkk', total)
+            grade,remark = get_grade_remark(total)
+            print(grade, remark)
+            record.total = total
+            record.grade = grade
+            record.remark = remark
+            record.average = class_average
+            record.lock = 1
+            record.save()
+
+        # Calculate for subject position
+        try:
+            assign_positions_to_subject_queryset(subject_result)
+        except Exception as error:
+            messages.error(request, str(error))
+            return redirect('computation')
+        
+
+        # Compute for annual result
+        if (record.term == 4):
+            pass
+
+        messages.success(request, 'Done')
+        return redirect('computation')
+    
+    elif 'class_result' in request.POST:
+        term_input = request.POST.get('c_term')
+        session_input = request.POST.get('c_session')
+        group_input = request.POST.get('group')
+        
+        c_term = Term.objects.get(ref=term_input)
+        c_session = Session.objects.get(ref=session_input)
+        group = AllClass.objects.get(ref=group_input)
+
+        compute_result_totals_and_positions(request, group.group,group.arm,c_term.term,c_session.session)
+        messages.success(request, 'Done')
+        return redirect('computation')
+
+    context = {
+        'subjects':subjects,
+        'terms':terms,
+        'sessions':sessions,
+        'groups':groups,
+    }
+    return render(request, 'academic/computation.html', context)

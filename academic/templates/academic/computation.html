@@ -1,0 +1,121 @@
+{% extends 'lms/main.html' %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Compute Class Result</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item">compute result</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+{% if user.profile.role.keyword == 'controller' or user.profile.role.keyword == 'admin' %}
+<section class="section register d-flex flex-column justify-content-center mb-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12 col-lg-6 d-flex flex-column justify-content-center">
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">COMPUTE SUBJECT REPORT</h5>
+            </div>
+            <form class="row g-3 needs-validation" novalidate method="POST">
+                {% csrf_token %}
+                <div class="col-12">
+                    <select name="session" class="form-select" aria-label="Default select example" required>
+                        {% for s in sessions %}
+                        <option value="{{s.ref}}" {% if s.active %}selected{% endif %}>
+                            {{s.session}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <select name="subject" class="form-select" aria-label="Default select example" required>
+                        <option value="" selected disabled>--Select subject--</option>
+                        {% for subject in subjects %}
+                        <option value="{{subject.ref}}">{{subject.group}}{{subject.arm}} - {{subject.subject}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <select name="term" class="form-select" aria-label="Default select example" required>
+                        {% for t in terms %}
+                        <option value="{{ t.ref }}" {% if t.active %}selected{% endif %}>
+                            {% if t.term == 1 %}
+                                First
+                            {% elif t.term == 2 %}
+                                Second
+                            {% elif t.term == 3 %}
+                                Third
+                            {% elif t.term == 4 %}
+                                Annual
+                            {% else %}
+                                {{ t.term }}
+                            {% endif %}
+                        </option>
+                        {% endfor %}
+                    </select>                    
+                </div>
+                <div class="col-12">
+                    <button name="subject_result" class="btn btn-primary w-100" type="submit">Compute</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="section register d-flex flex-column justify-content-center mb-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12 col-lg-6 d-flex flex-column justify-content-center">
+            <div>
+                <h5 class="card-title text-center pb-0 fs-4">COMPUTE CLASS RESULT</h5>
+            </div>
+            <form class="row g-3 needs-validation" novalidate method="POST">
+                {% csrf_token %}
+                <div class="col-12">
+                    <select name="c_session" class="form-select" aria-label="Default select example" required>
+                        {% for s in sessions %}
+                        <option value="{{s.ref}}" {% if s.active %}selected{% endif %}>
+                            {{s.session}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <select name="group" class="form-select" aria-label="Default select example" required>
+                        <option value="" selected disabled>--Select class--</option>
+                        {% for group in groups %}
+                        <option value="{{group.ref}}">{{group.group}}{{group.arm}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <select name="c_term" class="form-select" aria-label="Default select example" required>
+                        {% for t in terms %}
+                        <option value="{{ t.ref }}" {% if t.active %}selected{% endif %}>
+                            {% if t.term == 1 %}
+                                First
+                            {% elif t.term == 2 %}
+                                Second
+                            {% elif t.term == 3 %}
+                                Third
+                            {% elif t.term == 4 %}
+                                Annual
+                            {% else %}
+                                {{ t.term }}
+                            {% endif %}
+                        </option>
+                        {% endfor %}
+                    </select>                    
+                </div>
+                <div class="col-12">
+                    <button name="class_result" class="btn btn-primary w-100" type="submit">Compute</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</section>
+{% endif %}
+{% endblock content %}

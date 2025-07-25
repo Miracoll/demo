@@ -833,8 +833,12 @@ def compute_result_totals_and_positions(request, group, arm, term, session):
             defaults={'added_by': request.user},
         )
 
-        result.total = total_score
-        result.average = average_score
+        if (term != 4):
+            result.total = total_score
+            result.average = average_score
+        else:
+            result.total = total_score/3
+            result.average = average_score/3
         result_objects.append(result)
 
     # Step 4: Sort results by total for ranking

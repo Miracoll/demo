@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from lms.decorators import allowed_users
 from lms.models import Profile
 from configuration.models import AllClass, Subject, Config, Term, Session,RegisteredSubjects,AllSubject, Class,Arm
@@ -938,6 +939,7 @@ def download_class_result_pdf(request):
         group = AllClass.objects.get(ref=selected_class)
 
         # students = Student.objects.filter(group=group.group,arm=group.arm,active=1,graduated=False).order_by('last_name')
+
         results = Result.objects.filter(
             session=session.session,
             term=term.term,

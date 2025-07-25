@@ -7,6 +7,8 @@ from staff.models import Staff
 from student.models import Student, Paid_Student
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
+from django.db.models import Count
+from academic.models import Record
 from django.contrib.auth.models import User, Group
 from lms.models import Profile
 from django.contrib.auth.decorators import login_required
@@ -894,6 +896,31 @@ def manualUpdate(request):
                 number_of_student=studentLen
             )
         messages.success(request, f'{counter} students moved')
+        return redirect('secret')
+    
+    elif 'remove_duplicate_from_record' in request.POST:
+        # Step 1: Find duplicate groups
+        duplicate_groups = (
+            Record.objects
+            .values('student', 'term', 'session', 'subject', 'CA1')
+            .annotate(count=Count('id'))
+            .filter(count__gt=1)
+        )
+
+        # Step 2: For each duplicate group, keep only one record (lowest ID) and delete others
+        for group in duplicate_groups:
+            # Get all duplicates for this group
+            duplicates = Record.objects.filter(
+                student=group['student'],
+                term=group['term'],
+                session=group['session'],
+                subject=group['subject'],
+                CA1=group['CA1']
+            ).order_by('id')
+
+            # Keep the first one, delete the rest
+            duplicates.exclude(id=duplicates.first().id).delete()
+        messages.success(request, 'Done')
         return redirect('secret')
     
     context = {
